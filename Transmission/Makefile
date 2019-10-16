@@ -10,8 +10,8 @@
 
 # source & header files in this project (main.cpp is automatically assumed)
 
-HEADERS += transmitter.hpp
-HEADERS += receiver.hpp
+HEADERS := transmitter.hpp receiver.hpp
+
 #HEADERS += transmission.hpp
 # other places to look for files for this project
 SEARCH  :=

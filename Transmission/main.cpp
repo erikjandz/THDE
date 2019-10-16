@@ -22,7 +22,7 @@ int main(){
     }
     //Transmitter
     //std::array< bool, 16> message = {1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0};
-    //auto ir = target::d2_36kHz();
+    auto ir = target::d2_36kHz();
     //auto transmitter = Transmitter(ir);
     //for(;;){
       //transmitter.send_message(message);

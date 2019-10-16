@@ -23,18 +23,14 @@ private:
         //if bit is a 0
         if(!bit){
           _signal.write( 1 );
-          _signal.flush();
           hwlib::wait_us( 800 );
           _signal.write( 0 );
-          _signal.flush();
           hwlib::wait_us( 1600 );
         //if bit is a 1
         }else{
           _signal.write( 1 );
-          _signal.flush();
           hwlib::wait_us( 1600 );
           _signal.write( 0 );
-          _signal.flush();
           hwlib::wait_us( 800 );
         }
     }
