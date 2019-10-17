@@ -4,7 +4,7 @@
 #include <array>
 
 void transmit(){
-  std::array< bool, 16> message = {1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0};
+  std::array< bool, 16> message = {1,1,0,0,1,1,1,1,0,0,1,0,0,0,0,0};
   auto ir = hwlib::target::d2_36kHz();
   auto transmitter = Transmitter(ir);
   //for(;;){

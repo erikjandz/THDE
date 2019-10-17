@@ -14,10 +14,10 @@ public:
             int current_position = 1;
             //wait for first bit
             for(;;){
-              if(_read_bit() == 1){
-                message1[0] = 1;
-                break;
-              }
+                if(_read_bit() == 1){
+                    message1[0] = 1;
+                    break;
+                }
             }
             //keep going for the rest
             for(;;){
