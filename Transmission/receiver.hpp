@@ -2,12 +2,12 @@
 #include "hwlib.hpp"
 #include <array>
 
-class Receiver{
+class Receive_IR_Message_Control{
 public:
-    Receiver(hwlib::target::pin_in & _signal):
-        _signal( _signal )
+    Receive_IR_Message_Control(hwlib::target::pin_in & _IR_Receiver):
+        _IR_Receiver( _IR_Receiver )
         {}
-    std::array< bool, 16> receive_message(){
+    std::array< bool, 16> receiveMessage(){
         for(;;){
             std::array<bool, 16> message1;
             std::array<bool, 16> message2;
@@ -23,7 +23,7 @@ public:
             for(;;){
                 int temp = _read_bit();
                 if(temp == -1){
-                    return receive_message();
+                    return receiveMessage();
                 }else{
                     message1[current_position] = temp;
                 }
@@ -32,13 +32,13 @@ public:
                     break;
                 }
             }
-            //wait a bit and go on
+            //wait 3 ms and go on
             hwlib::wait_ms( 3 );
             current_position = 0;
             for(;;){
                 int temp = _read_bit();
                 if(temp == -1){
-                    return receive_message();
+                    return receiveMessage();
                 }else{
                     message2[current_position] = temp;
                 }
@@ -54,14 +54,40 @@ public:
 
     }
 
-private:
-    hwlib::target::pin_in & _signal;
+    void decode(std::array<bool, 16> array){
+        int playerID = 0;
+        int weaponPower = 0;
+        int index = 1;
+        for(int i = 16; i >= 1; i /=2){
+            if(array[index]){
+                playerID += i;
+            }
+            index ++;
+        }
 
+        for(int i = 16; i >= 1; i /=2){
+            if(array[index]){
+                weaponPower += i;
+            }
+            index ++;
+        }
+        for(int i = 0; i < 5; i ++){
+            if(array[10 + i] != (array[i] ^ array[i + 5])){
+                return;
+            }
+        }
+        hwlib::cout << playerID << hwlib::endl << weaponPower << hwlib::endl;
+    }
+
+private:
+    hwlib::target::pin_in & _IR_Receiver;
+
+    //wait for the first signal to arrive
     int _wait_for_start(){
         int pause = 0;
         for(;;){
-            _signal.refresh();
-            bool a = !_signal.read();
+            _IR_Receiver.refresh();
+            bool a = !_IR_Receiver.read();
             if(a){
                 return 1;
             }
@@ -85,11 +111,11 @@ private:
         a = 1;
         //then continue the next sequence
         hwlib::wait_us( 900 );
-        _signal.refresh();
-        b = ! _signal.read();
+        _IR_Receiver.refresh();
+        b = ! _IR_Receiver.read();
         hwlib::wait_us( 900 );
-        _signal.refresh();
-        c = ! _signal.read();
+        _IR_Receiver.refresh();
+        c = ! _IR_Receiver.read();
         //hwlib::cout << a << "," << b << "," << c << hwlib::endl;
         if(a && !b && !c){
             return 0;

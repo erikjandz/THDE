@@ -4,13 +4,9 @@
 #include <array>
 
 void transmit(){
-  std::array< bool, 16> message = {1,1,0,0,1,1,1,1,0,0,1,0,0,0,0,0};
   auto ir = hwlib::target::d2_36kHz();
-  auto transmitter = Transmitter(ir);
-  //for(;;){
-    transmitter.send_message(message);
-  //}
-  //transmitter.debug();
+  auto transmitter = Send_IR_Message_Control(ir, 15, 2);
+  transmitter.sendMessage();
 }
 
 void receive(){
@@ -24,14 +20,15 @@ void receive(){
   tsop_gnd.flush();
   tsop_vdd.flush();
 
-  auto receiver = Receiver( tsop_signal );
+  auto receiver = Receive_IR_Message_Control( tsop_signal );
   //receiver.print();
   for(;;){
-      std::array<bool, 16> array = receiver.receive_message();
+      std::array<bool, 16> array = receiver.receiveMessage();
       for(auto i  : array){
           hwlib::cout << i;
       }
       hwlib::cout << hwlib::endl;
+      receiver.decode(array);
   }
 }
 
