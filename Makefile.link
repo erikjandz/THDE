@@ -5,7 +5,7 @@
 # (c) Wouter van Ooijen (www.voti.nl) 2017
 #
 # This file is in the public domain.
-# 
+#
 #############################################################################
 
 # the location of the ti software directory
@@ -16,8 +16,8 @@ else
 endif
 
 # add Catch
-SEARCH            += $(TI-SOFTWARE)/Catch2/single_include
-
+RTOS              ?= $(TI-SOFTWARE)/rtos
+include           $(RTOS)/makefile.inc
 # include hwlib
 HWLIB             ?= $(TI-SOFTWARE)/hwlib
 include           $(HWLIB)/makefile.inc
@@ -26,4 +26,4 @@ include           $(HWLIB)/makefile.inc
 BMPTK             ?= $(TI-SOFTWARE)/bmptk
 
 # Defer to the bmptk/Makefile.inc to do the work
-include $(BMPTK)/Makefile.inc                                 
+include $(BMPTK)/Makefile.inc
