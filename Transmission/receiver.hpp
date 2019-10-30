@@ -1,12 +1,22 @@
 #pragma once
 #include "hwlib.hpp"
+#include "rtos.hpp"
 #include <array>
 
-class Receive_IR_Message_Control{
+class Receive_IR_Message_Control: public rtos::task<>{
 public:
     Receive_IR_Message_Control(hwlib::target::pin_in & _IR_Receiver):
         _IR_Receiver( _IR_Receiver )
         {}
+
+    void main()override{
+        for(;;){
+            std::array<bool, 16> array = receiveMessage();
+            decode(array);
+            hwlib::wait_us(100);
+        }
+    }
+
     std::array< bool, 16> receiveMessage(){
         for(;;){
             std::array<bool, 16> message1;
@@ -71,7 +81,7 @@ public:
             }
             index ++;
         }
-        for(int i = 0; i < 5; i ++){
+        for(int i = 1; i < 6; i ++){
             if(array[10 + i] != (array[i] ^ array[i + 5])){
                 return;
             }
@@ -104,16 +114,16 @@ private:
         bool a;
         bool b;
         bool c;
-        //wait for the first bit
+        //wait for the first bit and return is timed out
         if(_wait_for_start() == -1){
             return -1;
         }
         a = 1;
         //then continue the next sequence
-        hwlib::wait_us( 900 );
+        hwlib::wait_us( 800 );
         _IR_Receiver.refresh();
         b = ! _IR_Receiver.read();
-        hwlib::wait_us( 900 );
+        hwlib::wait_us( 800 );
         _IR_Receiver.refresh();
         c = ! _IR_Receiver.read();
         //hwlib::cout << a << "," << b << "," << c << hwlib::endl;
