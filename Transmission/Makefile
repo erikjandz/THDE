@@ -10,7 +10,7 @@
 
 # source & header files in this project (main.cpp is automatically assumed)
 
-HEADERS := transmitter.hpp receiver.hpp
+HEADERS := Hit_Run_Control IR_receiver IR_sender Receive_IR_Message_Control Send_IR_Message_Control
 
 #HEADERS += transmission.hpp
 # other places to look for files for this project
