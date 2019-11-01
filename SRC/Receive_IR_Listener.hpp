@@ -7,6 +7,7 @@ class Receive_IR_Listener : public rtos::task<>{
 public:
     Receive_IR_Listener() : _messageFlag(this, "msgflag")
     {}
+
     void ReceiveMessage(std::array< bool, 16> message){
         _messagePool.write(message);
         _messageFlag.set();
@@ -15,7 +16,7 @@ protected:
     rtos::pool< std::array< bool, 16> > _messagePool;
     rtos::flag _messageFlag;
 
-    void main() override;
+    void main() override {}
 
     int _GetWeaponPower(std::array<bool, 16> array){
         int weaponPower = 0;

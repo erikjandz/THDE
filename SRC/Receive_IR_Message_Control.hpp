@@ -4,10 +4,10 @@
 #include "IR_Receiver.hpp"
 #include <array>
 
+template<unsigned int N>
 class Receive_IR_Message_Control: public rtos::task<>{
 public:
-    template<int N>
-    Receive_IR_Message_Control(IR_receiver & _IR_Receiver, std::array<Receive_IR_Listener &, N> _IR_Listeners):
+    Receive_IR_Message_Control(IR_receiver & _IR_Receiver, std::array<Receive_IR_Listener*, N> _IR_Listeners):
         _IR_Receiver( _IR_Receiver ),
         _IR_Listeners( _IR_Listeners)
         {}
@@ -16,7 +16,7 @@ public:
         for(;;){
             std::array<bool, 16> message = _IR_Receiver.receiveMessage();
             for(auto i : _IR_Listeners){
-                i.ReceiveMessage(message);
+                i->ReceiveMessage(message);
             }
             hwlib::wait_us(100);
         }
@@ -49,5 +49,5 @@ public:
 
 private:
     IR_receiver & _IR_Receiver;
-    std::array<Receive_IR_Listener &, N>  _IR_Listeners;
+    std::array<Receive_IR_Listener*, N>  _IR_Listeners;
 };

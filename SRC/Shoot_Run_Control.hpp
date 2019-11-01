@@ -22,13 +22,13 @@ public:
     {
         for(;;)
         {
-            switch( case )
+            switch( _state )
             {
                 case State::IDLE:
                     hwlib::wait_ms( 60 );
                     if(_fireButton.isButtonPressed())
                     {
-                        _state = State::BUTTONPRESSED;
+                        _state = State::BUTTON_PRESSED;
                     }
                     break;
 
@@ -44,7 +44,7 @@ public:
                     decode(playerID, weaponPower);
                     //_speaker.playShootTone();
                     _send_ir_message_control.send_message(_message);
-                    state = IDLE;
+                    _state = State::IDLE;
                     break;
             }
         }
@@ -56,7 +56,7 @@ private:
     Send_IR_Message_Control & _send_ir_message_control;
     FireButton & _fireButton;
     Speaker & _speaker;
-    std::array<bool, 16> & _message;
+    std::array<bool, 16> _message;
 
     enum class State { IDLE, BUTTON_PRESSED };
     State _state = State::IDLE;
@@ -68,24 +68,24 @@ private:
         for(int i = 16; i >= 1; i /= 2){
           if(playerID >= i){
             playerID -= i;
-            message[index] = 1;
+            _message[index] = 1;
           }else{
-            message[index] = 0;
+            _message[index] = 0;
           }
           index ++;
         }
         for(int i = 16; i >= 1; i /= 2){
           if(weaponPower >= i){
             weaponPower -= i;
-            message[index] = 1;
+            _message[index] = 1;
           }else{
-            message[index] = 0;
+            _message[index] = 0;
           }
           index ++;
         }
         //add the control bits
         for(int i = 1; i < 6; i ++){
-          message[10 + i] = message[i] ^ message[i + 5];
+          _message[10 + i] = _message[i] ^ _message[i + 5];
         }
     }
 };

@@ -27,7 +27,7 @@ int main()
     auto firePin     = hwlib::target::pin_in(hwlib::target::pins::d7);
     auto speakerPin  = hwlib::target::pin_out(hwlib::target::pins::d8);
     auto sendPin     = hwlib::target::d2_36kHz();
-	auto receivePin  = target::pin_in( target::pins::d9 );
+	  auto receivePin  = target::pin_in( target::pins::d9 );
    	auto receiveGnd  = target::pin_out( target::pins::d10 );
    	auto receiveVCC  = target::pin_out( target::pins::d11 );
    	receiveGnd.write( 0 );
@@ -37,17 +37,17 @@ int main()
 
     // Boundary objects
     auto fireButton = FireButton(firePin);
-    auto irSender = IR_Sender(sendPin);
-    auto irReceiver = IR_Receiver(receivePin);
+    auto irSender = IR_sender(sendPin);
+    auto irReceiver = IR_receiver(receivePin);
 
     // Task objects
     auto display = Oled_Display(displayOLED, textWriter);
     auto time = Time_Run_Control(display);
-    auto hit = Hit_Run_Control();
     auto parameter = Game_Parameter_Control();
     auto send = Send_IR_Message_Control(irSender);
-    auto receive = Receive_IR_Message_Control(irReceiver, std::array<Receive_IR_Listener&, 2> { hit, parameter });
     auto speaker = Speaker(speakerPin);
+    auto hit = Hit_Run_Control(display, speaker);
+    auto receive = Receive_IR_Message_Control(irReceiver, std::array<Receive_IR_Listener*, 2> { &hit, &parameter });
     auto shoot = Shoot_Run_Control(hit, parameter, send, fireButton, speaker);
     (void) display;
     (void) time;
