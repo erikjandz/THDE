@@ -42,29 +42,7 @@ public:
 
     }
 
-    //send the start time as the leader
-    //void sendStartTime( int time ){
-        /*std::array<bool, 16> array;
-        array[0] = 1;
-        for(int i = 1; i < 7; i++){
-            array[i] = 0;
-        }
-        int index = 7;
-        for(int i = 8; i >= 1; i /= 2){
-            if(time >= i){
-                time -= i;
-                array[index] = 1;
-            }else{
-                array[index] = 0;
-            }
-            index ++;
-        }
-        for(int i = 1; i < 6; i ++){
-            array[10 + i] = array[i] ^ array[i + 5];
-        }
-        _send_16_bits(array);*/
-
-    //}
+  
 private:
     IR_sender & _IR_sender;
     rtos::pool< std::array<bool, 16> > _MessagePool;
