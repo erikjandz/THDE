@@ -8,33 +8,7 @@ class Send_IR_Message_Control: public rtos::task<>{
 public:
     Send_IR_Message_Control(IR_sender & _IR_sender):
         _IR_sender( _IR_sender )
-        {
-            //decode the message to a bool array ready to send
-            /*_message[0] = 1;
-            int index = 1;
-            for(int i = 16; i >= 1; i /= 2){
-              if(_playerID >= i){
-                _playerID -= i;
-                _message[index] = 1;
-              }else{
-                _message[index] = 0;
-              }
-              index ++;
-            }
-            for(int i = 16; i >= 1; i /= 2){
-              if(_weaponPower >= i){
-                _weaponPower -= i;
-                _message[index] = 1;
-              }else{
-                _message[index] = 0;
-              }
-              index ++;
-            }
-            //add the control bits
-            for(int i = 1; i < 6; i ++){
-              _message[10 + i] = _message[i] ^ _message[i + 5];
-            }*/
-        }
+        {}
 
     void main()override{
         enum class state_t{IDLE, SEND_MESSAGE};

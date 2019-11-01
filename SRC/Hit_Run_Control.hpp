@@ -21,15 +21,22 @@ public:
                       state = UPDATE_SCORE;
                       break;
                   case UPDATE_SCORE:
-                      _score.setScore(_score.getScore - _GetWeaponPower(_MessagePool.read()));
-                      
-
+                      _score.setScore(_score.getScore() - _GetWeaponPower(_MessagePool.read()));
+                      _display.showMessage(_score_pool.read());
+                      if(_score.getScore() > 0){
+                          _shoot_available_pool.write( 1 );
+                      }else{
+                          _speaker.playDeathTone(_score.getScore());
+                          _shoot_available_pool.write( 0 );
+                      }
+                      state = IDLE;
+                      break;
               }
           }
       }
 
       bool shootIsAvailable(){
-          return _score_pool.read() > 0;
+          return _shoot_available_pool.read();
       }
 
       int getScore(){
@@ -39,6 +46,7 @@ public:
 
 private:
       rtos::pool< int > _score_pool;
+      rtos::pool< bool > _shoot_available_pool;
       hwlib::glcd_oled & _display;
       Speaker & _speaker;
       ScoreEntity _score(100);
