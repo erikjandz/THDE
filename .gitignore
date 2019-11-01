@@ -1,0 +1,7 @@
+*.project
+*.o
+*.c
+*.bin
+*.elf
+*.ld
+*.map
