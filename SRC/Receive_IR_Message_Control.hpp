@@ -1,12 +1,12 @@
 #pragma once
 #include "hwlib.hpp"
 #include "rtos.hpp"
-#include "IR_receiver.hpp"
+#include "IR_Receiver.hpp"
 #include <array>
 
-template<int N>
 class Receive_IR_Message_Control: public rtos::task<>{
 public:
+    template<int N>
     Receive_IR_Message_Control(IR_receiver & _IR_Receiver, std::array<Receive_IR_Listener &, N> _IR_Listeners):
         _IR_Receiver( _IR_Receiver ),
         _IR_Listeners( _IR_Listeners)

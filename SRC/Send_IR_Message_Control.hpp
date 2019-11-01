@@ -1,5 +1,5 @@
 #pragma once
-#include "IR_sender.hpp"
+#include "IR_Sender.hpp"
 #include "hwlib.hpp"
 #include "rtos.hpp"
 #include <array>

@@ -8,33 +8,41 @@
 
 class Shoot_Run_Control: public rtos::task<>{
 public:
-    Shoot_Run_Control(Hit_Run_Control & _hit_run_control, Game_Parameter_Control & _game_parameter_control, Send_IR_Message_Control & _send_ir_message_control, FireButton & _firebutton, Speaker & _speaker):
-        _hit_run_control(_hit_run_control),
-        _game_parameter_control(_game_parameter_control),
-        _send_ir_message_control(_send_ir_message_control),
-        _firebutton(_firebutton),
-        _speaker(_speaker )
-        {}
+    Shoot_Run_Control(Hit_Run_Control & hit_run_control, Game_Parameter_Control & game_parameter_control, Send_IR_Message_Control & send_ir_message_control, FireButton & firebutton, Speaker & speaker):
+        _hit_run_control(hit_run_control),
+        _game_parameter_control(game_parameter_control),
+        _send_ir_message_control(send_ir_message_control),
+        _firebutton(firebutton),
+        _speaker(speaker)
+    {
 
-    void main()override{
-        enum class state_t{IDLE, BUTTONPRESSED};
-        state_t state = IDLE;
-        for(;;){
-            switch( case ){
-                case IDLE:
-                    wait_ms( 60 );
-                    if(_fireButton.isButtonPressed()){
-                        state = BUTTONPRESSED;
+    }
+
+    void main() override
+    {
+        for(;;)
+        {
+            switch( case )
+            {
+                case State::IDLE:
+                    hwlib::wait_ms( 60 );
+                    if(_fireButton.isButtonPressed())
+                    {
+                        _state = State::BUTTONPRESSED;
                     }
                     break;
-                case BUTTONPRESSED:
-                    if(!_hit_run_control.shootIsAvailable()){
-                        state = IDLE;
+
+                case State::BUTTON_PRESSED:
+                    if(!_hit_run_control.shootIsAvailable())
+                    {
+                        _state = State::IDLE;
                         break;
                     }
-                    playerID = _game_parameter_control.getPlayerID();
-                    weaponPower = _game_parameter_control.getWeaponPower();
-                    _speaker.playShootTone();
+
+                    int playerID = _game_parameter_control.getPlayerID();
+                    int weaponPower = _game_parameter_control.getWeaponPower();
+                    decode(playerID, weaponPower);
+                    //_speaker.playShootTone();
                     _send_ir_message_control.send_message(_message);
                     state = IDLE;
                     break;
@@ -48,36 +56,36 @@ private:
     Send_IR_Message_Control & _send_ir_message_control;
     FireButton & _fireButton;
     Speaker & _speaker;
-    int _playerID;
-    int weaponPower;
     std::array<bool, 16> & _message;
+
+    enum class State { IDLE, BUTTON_PRESSED };
+    State _state = State::IDLE;
 
     void decode(int playerID, int weaponPower){
         //decode the message to a bool array ready to send
         _message[0] = 1;
         int index = 1;
         for(int i = 16; i >= 1; i /= 2){
-          if(_playerID >= i){
-            _playerID -= i;
-            _message[index] = 1;
+          if(playerID >= i){
+            playerID -= i;
+            message[index] = 1;
           }else{
-            _message[index] = 0;
+            message[index] = 0;
           }
           index ++;
         }
         for(int i = 16; i >= 1; i /= 2){
-          if(_weaponPower >= i){
-            _weaponPower -= i;
-            _message[index] = 1;
+          if(weaponPower >= i){
+            weaponPower -= i;
+            message[index] = 1;
           }else{
-            _message[index] = 0;
+            message[index] = 0;
           }
           index ++;
         }
         //add the control bits
         for(int i = 1; i < 6; i ++){
-          _message[10 + i] = _message[i] ^ _message[i + 5];
+          message[10 + i] = message[i] ^ message[i + 5];
         }
     }
-
 };

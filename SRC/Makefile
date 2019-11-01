@@ -16,11 +16,11 @@ HEADERS += Game_Parameter_Control.hpp
 HEADERS += Hit_Run_Control.hpp
 HEADERS += Hit_Transfer_Control.hpp
 HEADERS += Init_Game_Control.hpp
-HEADERS += IR_receiver.hpp
-HEADERS += IR_sender.hpp
+HEADERS += IR_Receiver.hpp
+HEADERS += IR_Sender.hpp
 HEADERS += Keypad.hpp
 HEADERS += Oled_Display.hpp
-HEADERS += Receive_IR_listener.hpp
+HEADERS += Receive_IR_Listener.hpp
 HEADERS += Receive_IR_Message_Control.hpp
 HEADERS += ScoreEntity.hpp
 HEADERS += Send_IR_Message_Control.hpp
@@ -28,6 +28,7 @@ HEADERS += Shoot_Run_Control.hpp
 HEADERS += Speaker.hpp
 HEADERS += Time_Run_Control.hpp
 
+#HEADERS += transmission.hpp
 # other places to look for files for this project
 SEARCH  :=
 

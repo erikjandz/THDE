@@ -5,14 +5,19 @@
 # (c) Wouter van Ooijen (www.voti.nl) 2017
 #
 # This file is in the public domain.
-#
+# 
 #############################################################################
 
 # settings for Arduino Due projects
-TARGET            := arduino_due
+TARGET            ?= arduino_due
 SERIAL_PORT       ?= COM2
-CONSOLE_BAUDRATE  := 2400
-HEAP              := BMPTK
+CONSOLE_BAUDRATE  ?= 2400
+STACK_SIZE        ?= 81920
+HEAP              ?= BMPTK
 
-# defer to the Makefile.shared
+# add the rtos
+RTOS              ?= $(RELATIVE)/../rtos
+include           $(RTOS)/makefile.inc
+
+# defer to the Makefile.link
 include           $(RELATIVE)/Makefile.link

@@ -1,6 +1,6 @@
 #pragma once
 #include "hwlib.hpp"
-#include "beep.hpp"
+#include "Beep.hpp"
 
 class Speaker : public rtos::task<> {
 public:
