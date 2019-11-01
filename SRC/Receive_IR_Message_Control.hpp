@@ -1,67 +1,23 @@
 #pragma once
 #include "hwlib.hpp"
 #include "rtos.hpp"
+#include "IR_receiver.hpp"
 #include <array>
 
+template<int N>
 class Receive_IR_Message_Control: public rtos::task<>{
 public:
-    Receive_IR_Message_Control(hwlib::target::pin_in & _IR_Receiver):
-        _IR_Receiver( _IR_Receiver )
+    Receive_IR_Message_Control(IR_receiver & _IR_Receiver, std::array<Receive_IR_Listener &, N> _IR_Listeners):
+        _IR_Receiver( _IR_Receiver ),
+        _IR_Listeners( _IR_Listeners)
         {}
 
     void main()override{
         for(;;){
-            std::array<bool, 16> array = receiveMessage();
-            decode(array);
+            std::array<bool, 16> message = _IR_Receiver.receiveMessage();
+            _IR_Listener.ReceiveMessage(message);
             hwlib::wait_us(100);
         }
-    }
-
-    std::array< bool, 16> receiveMessage(){
-        for(;;){
-            std::array<bool, 16> message1;
-            std::array<bool, 16> message2;
-            int current_position = 1;
-            //wait for first bit
-            for(;;){
-                if(_read_bit() == 1){
-                    message1[0] = 1;
-                    break;
-                }
-            }
-            //keep going for the rest
-            for(;;){
-                int temp = _read_bit();
-                if(temp == -1){
-                    return receiveMessage();
-                }else{
-                    message1[current_position] = temp;
-                }
-                current_position ++;
-                if(current_position == 16){
-                    break;
-                }
-            }
-            //wait 3 ms and go on
-            hwlib::wait_ms( 3 );
-            current_position = 0;
-            for(;;){
-                int temp = _read_bit();
-                if(temp == -1){
-                    return receiveMessage();
-                }else{
-                    message2[current_position] = temp;
-                }
-                current_position ++;
-                if(current_position == 16){
-                    break;
-                }
-            }
-            if(message1 == message2){
-                return message1;
-            }
-        }
-
     }
 
     void decode(std::array<bool, 16> array){
@@ -90,49 +46,6 @@ public:
     }
 
 private:
-    hwlib::target::pin_in & _IR_Receiver;
-
-    //wait for the first signal to arrive
-    int _wait_for_start(){
-        int pause = 0;
-        for(;;){
-            _IR_Receiver.refresh();
-            bool a = !_IR_Receiver.read();
-            if(a){
-                return 1;
-            }
-            //timed out
-            if(pause == 4000){
-                return -1;
-            }
-            hwlib::wait_us(100);
-            pause += 100;
-        }
-    }
-    //read a bit, return 0, 1 if bit is 0, 1 and return -1 if nothing is received
-    int _read_bit(){
-        bool a;
-        bool b;
-        bool c;
-        //wait for the first bit and return is timed out
-        if(_wait_for_start() == -1){
-            return -1;
-        }
-        a = 1;
-        //then continue the next sequence
-        hwlib::wait_us( 800 );
-        _IR_Receiver.refresh();
-        b = ! _IR_Receiver.read();
-        hwlib::wait_us( 800 );
-        _IR_Receiver.refresh();
-        c = ! _IR_Receiver.read();
-        //hwlib::cout << a << "," << b << "," << c << hwlib::endl;
-        if(a && !b && !c){
-            return 0;
-        }else if(a && b && !c){
-            return 1;
-        }else{
-            return -1;
-        }
-    }
+    IR_receiver & _IR_Receiver;
+    std::array<Receive_IR_Listener &, N>  _IR_Listeners;
 };
