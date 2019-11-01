@@ -12,7 +12,7 @@ public:
         _hit_run_control(hit_run_control),
         _game_parameter_control(game_parameter_control),
         _send_ir_message_control(send_ir_message_control),
-        _firebutton(firebutton),
+        _fireButton(firebutton),
         _speaker(speaker)
     {
 

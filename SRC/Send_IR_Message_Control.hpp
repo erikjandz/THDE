@@ -7,33 +7,37 @@
 class Send_IR_Message_Control: public rtos::task<>{
 public:
     Send_IR_Message_Control(IR_sender & _IR_sender):
-        _IR_sender( _IR_sender )
+        _IR_sender( _IR_sender ),
+        _MessageFlag(this, "msgFlag")
         {}
 
-    void main()override{
-        enum class state_t{IDLE, SEND_MESSAGE};
-        state_t state = IDLE;
-            for(;;){
-                switch( state ):
-                    case IDLE:
-                        wait( MessageFlag );
-                        state = SEND_MESSAGE;
+    void main()override
+    {
+            for(;;)
+            {
+                switch( _state )
+                {
+                    case State::IDLE:
+                        wait( _MessageFlag );
+                        _state = State::SEND_MESSAGE;
                         break;
-                    case SEND_MESSAGE:
-                        sendMessage( _MessagePool.read());
-                        state = IDLE;
-                        break;
-              }
-    }
+                    case State::SEND_MESSAGE:
+                        auto msg = _MessagePool.read();
 
-    void sendMessage(message){
-        for(auto i : message){
-            _send_bit( i );
-        }
-        hwlib::wait_ms( 3 );
-        for(auto i : message){
-            _send_bit( i );
-        }
+                        for(auto i : msg)
+                        {
+                            _send_bit( i );
+                        }
+                        hwlib::wait_ms( 3 );
+                        for(auto i : msg)
+                        {
+                            _send_bit( i );
+                        }
+
+                        _state = State::IDLE;
+                        break;
+                 }
+            }
     }
 
     void send_message(std::array<bool, 16> message){
@@ -46,6 +50,9 @@ private:
     IR_sender & _IR_sender;
     rtos::pool< std::array<bool, 16> > _MessagePool;
     rtos::flag _MessageFlag;
+
+    enum class State { IDLE, SEND_MESSAGE };
+    State _state = State::IDLE;
 
     void _send_bit(bool bit){
         //if bit is a 1

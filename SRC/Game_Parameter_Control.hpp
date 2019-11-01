@@ -3,7 +3,7 @@
 #include "rtos.hpp"
 #include "Receive_IR_Listener.hpp"
 
-class Game_Parameter_Control: public Receive_IR_Listener, public rtos::task<>{
+class Game_Parameter_Control: public Receive_IR_Listener{
 public:
     Game_Parameter_Control(){
       _playerIDPool.write(5);
@@ -11,23 +11,21 @@ public:
     }
 
     void main()override{
-        enum class state_t{IDLE, DECODE, ACTIVE};
-        state_t state = IDLE;
         for(;;){
-            switch( state ){
-                case IDLE:
-                    wait( _MessageFlag );
-                    state = DECODE;
+            switch( _state ){
+                case State::IDLE:
+                    wait( _messageFlag );
+                    _state = State::DECODE;
                     break;
-                case DECODE:
-                    if(_GetPlayerID == 0){
-                        state = ACTIVE;
+                case State::DECODE:
+                    if(getPlayerID() == 0){
+                        _state = State::ACTIVE;
                     }else{
-                        state = IDLE;
+                        _state = State::IDLE;
                     }
                     break;
-                case ACTIVE:
-                    state = IDLE;
+                case State::ACTIVE:
+                    _state = State::IDLE;
                     break;
             }
         }
@@ -43,4 +41,7 @@ public:
 private:
     rtos::pool< int > _playerIDPool;
     rtos::pool< int > _weaponPowerPool;
+
+    enum class State { IDLE, ACTIVE, DECODE };
+    State _state = State::IDLE;
 };
