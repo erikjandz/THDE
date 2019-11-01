@@ -41,8 +41,7 @@ public:
         _MessageFlag.set();
 
     }
-
-  
+    
 private:
     IR_sender & _IR_sender;
     rtos::pool< std::array<bool, 16> > _MessagePool;

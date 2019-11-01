@@ -32,9 +32,9 @@ public:
                         state = IDLE;
                         break;
                     }
-                    playerID = _game_parameter_control.getPlayerID;
-                    weaponPower = _game_parameter_control.getWeaponPower;
-                    _speaker.playShootTone;
+                    playerID = _game_parameter_control.getPlayerID();
+                    weaponPower = _game_parameter_control.getWeaponPower();
+                    _speaker.playShootTone();
                     _send_ir_message_control.send_message(_message);
                     state = IDLE;
                     break;

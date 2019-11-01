@@ -50,17 +50,4 @@ private:
       hwlib::glcd_oled & _display;
       Speaker & _speaker;
       ScoreEntity _score(100);
-
-      int _GetWeaponPower(std::array<bool, 16> array){
-          int weaponPower = 0;
-          int index = 6;
-          for(int i = 16; i >= 1; i /=2){
-              if(array[index]){
-                  weaponPower += i;
-              }
-              index ++;
-          }
-          return weaponPower;
-      }
-
 };

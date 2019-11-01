@@ -15,7 +15,9 @@ public:
     void main()override{
         for(;;){
             std::array<bool, 16> message = _IR_Receiver.receiveMessage();
-            _IR_Listener.ReceiveMessage(message);
+            for(auto i : _IR_Listeners){
+                i.ReceiveMessage(message);
+            }
             hwlib::wait_us(100);
         }
     }
