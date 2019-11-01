@@ -1,0 +1,22 @@
+#############################################################################
+#
+# Project Makefile
+#
+# (c) Wouter van Ooijen (www.voti.nl) 2016
+#
+# This file is in the public domain.
+#
+#############################################################################
+
+# source & header files in this project (main.cpp is automatically assumed)
+
+HEADERS := Hit_Run_Control IR_receiver IR_sender Receive_IR_Message_Control Send_IR_Message_Control
+
+#HEADERS += transmission.hpp
+# other places to look for files for this project
+SEARCH  :=
+
+# set REATIVE to the next higher directory
+# and defer to the Makefile.due there
+RELATIVE := $(RELATIVE)../
+include $(RELATIVE)Makefile.due
