@@ -6,12 +6,11 @@
 
 class Send_IR_Message_Control: public rtos::task<>{
 public:
-    Send_IR_Message_Control(IR_sender & _IR_sender, int _weaponPower, int _playerID, hwlib::target::pin_in & pinin):
-        _IR_sender( _IR_sender ),
-        pinin( pinin )
+    Send_IR_Message_Control(IR_sender & _IR_sender):
+        _IR_sender( _IR_sender )
         {
             //decode the message to a bool array ready to send
-            _message[0] = 1;
+            /*_message[0] = 1;
             int index = 1;
             for(int i = 16; i >= 1; i /= 2){
               if(_playerID >= i){
@@ -34,38 +33,43 @@ public:
             //add the control bits
             for(int i = 1; i < 6; i ++){
               _message[10 + i] = _message[i] ^ _message[i + 5];
-            }
+            }*/
         }
 
     void main()override{
-        for(;;){
-          pinin.refresh();
-          hwlib::wait_us(100);
-          if(!pinin.read()){
-              //sendStartTime(15);
-              sendMessage();
-              hwlib::wait_ms( 1000);
-              //_IR_sender.write( 1 );
-              //hwlib::wait_ms(1000);
-              //_IR_sender.write( 0 );
-              //hwlib::wait_ms(1000);
-          }
-
-        }
+        enum class state_t{IDLE, SEND_MESSAGE};
+        state_t state = IDLE;
+            for(;;){
+                switch( state ):
+                    case IDLE:
+                        wait( MessageFlag );
+                        state = SEND_MESSAGE;
+                        break;
+                    case SEND_MESSAGE:
+                        sendMessage( _MessagePool.read());
+                        state = IDLE;
+                        break;
+              }
     }
 
-    void sendMessage(){
-        for(auto i : _message){
+    void sendMessage(message){
+        for(auto i : message){
             _send_bit( i );
         }
         hwlib::wait_ms( 3 );
-        for(auto i : _message){
+        for(auto i : message){
             _send_bit( i );
         }
     }
 
+    void send_message(std::array<bool, 16> message){
+        _MessagePool.write(message);
+        _MessageFlag.set();
+
+    }
+
     //send the start time as the leader
-    void sendStartTime( int time ){
+    //void sendStartTime( int time ){
         /*std::array<bool, 16> array;
         array[0] = 1;
         for(int i = 1; i < 7; i++){
@@ -86,11 +90,11 @@ public:
         }
         _send_16_bits(array);*/
 
-    }
+    //}
 private:
     IR_sender & _IR_sender;
-    std::array<bool, 16> _message;
-    hwlib::target::pin_in & pinin;
+    rtos::pool< std::array<bool, 16> > _MessagePool;
+    rtos::flag _MessageFlag;
 
     void _send_bit(bool bit){
         //if bit is a 1
