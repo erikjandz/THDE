@@ -2,24 +2,27 @@
 #include "hwlib.hpp"
 #include "rtos.hpp"
 #include "Oled_Display.hpp"
-#include "Hit_Run_Control.hpp"
 #include <cstring>
 
 class Time_Run_Control : public rtos::task<>
 {
 public:
-	Time_Run_Control(Oled_Display & display, Hit_Run_Control & hitControl) :
+	Time_Run_Control(Oled_Display & display, Speaker & speaker, Hit_Transfer_Control & hit_transfer_control):
 		task("Time_Run_Control"),
 		_clock(this, 1'000'000, "_clock"),
-		_hitControl(hitControl),
-		_display(display)
+		_time_set_flag(this, "flag"),
+		_time_set_pool(this, "pool"),
+		_display(display),
+		_speaker(speaker),
+		_hit_transfer_control(hit_transfer_control)
 	{
 
 	}
 
 	void setTime(int time)
 	{
-		_timeRemaining = time;
+		_time_set_pool.read();
+		_time_set_flag.set();
 	}
 
 	int getTime()
@@ -35,33 +38,48 @@ protected:
 			switch(_state)
 			{
 				case State::IDLE:
-					wait(_clock);
+				  wait( _time_set_flag);
+					_state = State::INIT;
+					break;
+				case State::INIT:
+					_timeRemaining = _time_set_pool.read();
+					_state = State::COUNTDOWN;
+					break;
+				case State::COUNTDOWN:
+					wait( _clock);
 					_state = State::ACTIVE;
 					break;
-
 				case State::ACTIVE:
 					_timeRemaining--;
 					_display.clear();
 					_display.showNumber(_timeRemaining);
-					_display.newLine();
-					_display.showText("Score:");
-					_display.newLine();
-					_hitControl.displayScore();
+					_display.showText("Time:");
+					_display.flush();
 					_state = State::IDLE;
+					if(_timeRemaining <= 0){
+						_hit_transfer_control.TimeFlagSet();
+						_state = State::done;
+					}
+					break;
+				case State::DONE:
+					_speaker.playEndTone();
+					hwlib::wait_ms(1000000)
 					break;
 			}
 		}
 	}
 
 private:
-	int _timeRemaining = 25;
+	int _timeRemaining = -1;
 
 	rtos::clock _clock;
+	rtos::pool< int > _time_set_pool;
+	rtos::flag _time_set_flag;
 
-	enum class State { IDLE, ACTIVE };
+	enum class State { IDLE, ACTIVE, INIT, COUNTDOWN, DONE};
 	State _state = State::IDLE;
 
-	Hit_Run_Control & _hitControl;
-
 	Oled_Display & _display;
+	Speaker & _speaker;
+	Hit_Transfer_Control & _hit_transfer_control;
 };
