@@ -28,6 +28,7 @@ public:
                     hwlib::wait_ms( 60 );
                     if(_fireButton.isButtonPressed())
                     {
+                        hwlib::cout << "button";
                         _state = State::BUTTON_PRESSED;
                     }
                     break;

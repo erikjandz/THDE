@@ -54,6 +54,11 @@ public:
 		temp[0] = IntChar(false, number, 0); 
 		_displayPool.write(temp);
 	}
+	
+	void newLine()
+	{
+		_textWriter << "\n";
+	}
 
 	void flush()
 	{
