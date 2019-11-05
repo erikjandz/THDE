@@ -67,8 +67,7 @@ public:
                 case State::ACTIVE:
                     //decode the time and give it to time_run_control
                     _time_run_control.setTime(_GetWeaponPower(_messagePool.read()));
-                    hwlib::wait_us(60);
-                    _state = State::IDLE;
+                    hwlib::wait_ms(10000000);
                     break;
             }
         }
