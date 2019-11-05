@@ -12,7 +12,7 @@
 #include "Receive_IR_Message_Control.hpp"
 #include "Keypad.hpp"
 #include "Init_Game_Control.hpp"
-//#include "Hit_Transfer_Control.hpp"
+#include "Hit_Transfer_Control.hpp"
 
 int main()
 {
@@ -21,18 +21,18 @@ int main()
     hwlib::wait_ms( 1000 );
 
     // Hardware objects
-	auto kp0 		 = target::pin_oc( target::pins::a0 );
-    auto kp1 		 = target::pin_oc( target::pins::a1 );
-    auto kp2 		 = target::pin_oc( target::pins::a2 );
-    auto kp3 		 = target::pin_oc( target::pins::a3 );
-    auto kp4 		 = target::pin_in( target::pins::a4 );
-    auto kp5 		 = target::pin_in( target::pins::a5 );
-    auto kp6 		 = target::pin_in( target::pins::a6 );
-    auto kp7         = target::pin_in( target::pins::a7 );
+	auto kp0 		 = target::pin_oc( target::pins::d36 );
+    auto kp1 		 = target::pin_oc( target::pins::d38 );
+    auto kp2 		 = target::pin_oc( target::pins::d40 );
+    auto kp3 		 = target::pin_oc( target::pins::d42 );
+    auto kp4 		 = target::pin_in( target::pins::d44 );
+    auto kp5 		 = target::pin_in( target::pins::d46 );
+    auto kp6 		 = target::pin_in( target::pins::d48 );
+    auto kp7         = target::pin_in( target::pins::d50 );
     auto kp_out      = hwlib::port_oc_from( kp0, kp1, kp2, kp3 );
     auto kp_in       = hwlib::port_in_from( kp4,  kp5,  kp6,  kp7  );
     auto kp_matrix   = hwlib::matrix_of_switches( kp_out, kp_in );
-    auto kp_object   = hwlib::keypad< 16 >( kp_matrix, "123A456B789C*0#D" );
+    auto kp_object   = hwlib::keypad< 16 >( kp_matrix, "147*2580369#ABCD" );
     auto displaySCL  = hwlib::target::pin_oc(hwlib::target::pins::scl);
     auto displaySDA  = hwlib::target::pin_oc(hwlib::target::pins::sda);
     auto displayBUS  = hwlib::i2c_bus_bit_banged_scl_sda(displaySCL, displaySDA);
@@ -54,19 +54,21 @@ int main()
     auto fireButton = FireButton(firePin);
     auto irSender   = IR_sender(sendPin);
     auto irReceiver = IR_receiver(receivePin);
-    auto keyPad     = Keypad(kp_object);
+    auto keypad     = Keypad(kp_object);
 
     // Task objects
     auto display   = Oled_Display(displayOLED, textWriter);
-    auto send      = Send_IR_Message_Control(irSender);
     auto speaker   = Speaker(speakerPin);
     auto time      = Time_Run_Control(display, speaker);
-    auto parameter = Game_Parameter_Control(time);
+    auto parameter = Game_Parameter_Control(keypad, display);
     auto hit       = Hit_Run_Control(display, speaker, parameter);
+    auto transfer  = Hit_Transfer_Control(hit);
     time.giveHitControlPointer(&hit);
+    time.giveTransferControlPointer(&transfer);
     auto receive   = Receive_IR_Message_Control(irReceiver, std::array<Receive_IR_Listener*, 2> { &hit, &parameter });
+    auto send      = Send_IR_Message_Control(irSender);
     auto shoot     = Shoot_Run_Control(hit, parameter, send, fireButton, speaker);
-   	auto init      = Init_Game_Control(keyPad, display, send);
+   	auto init      = Init_Game_Control(keypad, display, send);
     (void) display;
     (void) parameter;
    	(void) send;

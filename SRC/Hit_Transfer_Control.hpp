@@ -6,7 +6,9 @@
 class Hit_Transfer_Control : public rtos::task<>{
 public:
   Hit_Transfer_Control(Hit_Run_Control & _hit_run_control):
-  _hit_run_control(_hit_run_control), timeReached_flag(this, "flag")
+    task(6, "Hit_Transfer_Control"),
+    _hit_run_control(_hit_run_control), 
+    timeReached_flag(this, "flag")
   {}
   //
   // playerScore(int playerIndex){

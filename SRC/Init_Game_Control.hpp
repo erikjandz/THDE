@@ -6,6 +6,7 @@
 class Init_Game_Control : public rtos::task<>{
 public:
   Init_Game_Control(Keypad & keypad, Oled_Display & display, Send_IR_Message_Control & send_ir_message_control):
+    task(5, "Init_Game_Control"),
     _keyPad(keypad),
     _display(display),
     _send_ir_message_control(send_ir_message_control)
@@ -30,7 +31,7 @@ public:
           if(k >= '0' && k <= '9'){
             key = k;
             _display.clear();
-            _display.showText(k);
+            _display.showText(&k);
             _display.showText(" pressed");
             _state = State::NUMBER_ENTERED;
           }
@@ -43,7 +44,7 @@ public:
           }
           break;
         case State::DONE:
-          _send_ir_message_control.send_message(0, key - 48);
+          //_send_ir_message_control.send_message(0, key - 48);
           hwlib::wait_ms(1000000);
           break;
       }

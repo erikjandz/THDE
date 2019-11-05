@@ -1,16 +1,18 @@
 #pragma once
+#include "Time_Run_Control.hpp"
 #include "hwlib.hpp"
 #include "rtos.hpp"
 #include "Receive_IR_Listener.hpp"
-#include "Time_Run_Control.hpp"
 #include "Keypad.hpp"
 
-class Game_Parameter_Control: public Receive_IR_Listener{
+class Game_Parameter_Control: public Receive_IR_Listener
+{
 public:
-    Game_Parameter_Control(Keypad & keypad, Oled_Display & display, Time_Run_Control & time_run_control):
+    Game_Parameter_Control(Keypad & keypad, Oled_Display & display)://, Time_Run_Control & time_run_control):
+   		 Receive_IR_Listener(4),
         _keypad( keypad ),
-        _display( display ),
-        _time_run_control( time_run_control)
+        _display( display )
+        //_time_run_control( time_run_control)
     {
       _playerIDPool.write(1);
       _weaponPowerPool.write(0);
@@ -22,7 +24,8 @@ public:
             switch( _state ){
                 case State::IDLE:
                     hwlib::wait_ms(60);
-                    if(_keypad.getKeyPressed() == 'A'){
+                    if(_keypad.getKeyPressed() == 'A')
+                    {
                         _state = State::A_PRESSED;
                     }
                     break;
@@ -51,6 +54,7 @@ public:
                 case State::SECOND_NUMBER_ENTERED:
                     _playerIDPool.write(_playerID);
                     _weaponPowerPool.write(_weaponPower);
+                    hwlib::cout << _playerID << " " << _weaponPower << hwlib::endl;
                     _state = State::WAITING_FOR_LEADER;
                     break;
                 case State::WAITING_FOR_LEADER:
@@ -67,7 +71,7 @@ public:
                     break;
                 case State::ACTIVE:
                     //decode the time and give it to time_run_control
-                    _time_run_control.setTime(_GetWeaponPower(_messagePool.read()));
+                    //_time_run_control.setTime(_GetWeaponPower(_messagePool.read()));
                     hwlib::wait_ms(10000000);
                     break;
             }
@@ -89,7 +93,7 @@ private:
     rtos::pool< int > _weaponPowerPool;
     Keypad & _keypad;
     Oled_Display & _display;
-    Time_Run_Control & _time_run_control;
+    //Time_Run_Control & _time_run_control;
 
     enum class State { IDLE, WAITING_FOR_LEADER, ACTIVE, IF_LEADER, A_PRESSED, B_PRESSED, FIRST_NUMBER_ENTERED, SECOND_NUMBER_ENTERED};
     State _state = State::IDLE;

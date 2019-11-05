@@ -11,13 +11,12 @@ class Time_Run_Control : public rtos::task<>
 {
 public:
 	Time_Run_Control(Oled_Display & display, Speaker & speaker):
-		task("Time_Run_Control"),
+		task(9, "Time_Run_Control"),
 		_clock(this, 1'000'000, "_clock"),
 		_time_set_flag(this, "flag"),
 		_time_set_pool("pool"),
 		_display(display),
 		_speaker(speaker)
-		//_hit_transfer_control(hit_transfer_control)
 	{
 
 	}
@@ -25,6 +24,11 @@ public:
 	void giveHitControlPointer(Hit_Run_Control * instance)
 	{
 		_hitControl = instance;
+	}
+
+	void giveTransferControlPointer(Hit_Transfer_Control * instance)
+	{
+		_transferControl = instance;
 	}
 
 	void setTime(int time)
@@ -75,7 +79,7 @@ protected:
 					_display.flush();
 					_state = State::COUNTDOWN;
 					if(_timeRemaining <= 0){
-						//_hit_transfer_control.TimeFlagSet();
+						_transferControl->TimeFlagSet();
 						_state = State::DONE;
 					}
 					break;
@@ -100,6 +104,6 @@ private:
 
 	Oled_Display & _display;
 	Speaker & _speaker;
-	//Hit_Transfer_Control & _hit_transfer_control;
+	Hit_Transfer_Control * _transferControl = nullptr;
 	Hit_Run_Control * _hitControl = nullptr;
 };
