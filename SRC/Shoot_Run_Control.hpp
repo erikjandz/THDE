@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SHOOT_RUN_CONTROL_HPP
+#define SHOOT_RUN_CONTROL_HPP
 #include "hwlib.hpp"
 #include "rtos.hpp"
 #include "Hit_Run_Control.hpp"
@@ -102,3 +103,5 @@ private:
         }
     }
 };
+
+#endif

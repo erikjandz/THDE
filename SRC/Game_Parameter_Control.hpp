@@ -1,4 +1,6 @@
-#pragma once
+#ifndef GAME_PARAMETER_CONTROL_HPP
+#define GAME_PARAMETER_CONTROL_HPP
+
 #include "Time_Run_Control.hpp"
 #include "hwlib.hpp"
 #include "rtos.hpp"
@@ -8,7 +10,7 @@
 class Game_Parameter_Control: public Receive_IR_Listener
 {
 public:
-    Game_Parameter_Control(Keypad & keypad, Oled_Display & display)://, Time_Run_Control & time_run_control):
+    Game_Parameter_Control(Keypad & keypad, Oled_Display & display, Time_Run_Control & time_run_control):
    		 Receive_IR_Listener(4),
         _keypad( keypad ),
         _display( display )
@@ -98,3 +100,5 @@ private:
     enum class State { IDLE, WAITING_FOR_LEADER, ACTIVE, IF_LEADER, A_PRESSED, B_PRESSED, FIRST_NUMBER_ENTERED, SECOND_NUMBER_ENTERED};
     State _state = State::IDLE;
 };
+
+#endif

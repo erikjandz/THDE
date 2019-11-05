@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RECEIVE_IR_MESSAGE_CONTROL_HPP
+#define RECEIVE_IR_MESSAGE_CONTROL_HPP
 #include "hwlib.hpp"
 #include "rtos.hpp"
 #include "IR_Receiver.hpp"
@@ -57,3 +58,5 @@ private:
     IR_receiver & _IR_Receiver;
     std::array<Receive_IR_Listener*, N>  _IR_Listeners;
 };
+
+#endif

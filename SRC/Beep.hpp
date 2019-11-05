@@ -1,4 +1,6 @@
-#pragma once
+#ifndef BEEP_HPP
+#define BEEP_HPP
+
 #include "hwlib.hpp"
 
 namespace beep {
@@ -81,3 +83,5 @@ namespace beep {
      }
   }
 }
+
+#endif /* end of include guard BEEP_HPP */

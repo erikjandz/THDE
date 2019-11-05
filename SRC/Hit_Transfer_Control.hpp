@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HIT_TRANSFER_CONTROL_HPP
+#define HIT_TRANSFER_CONTROL_HPP
+
 #include "hwlib.hpp"
 #include "rtos.hpp"
 #include "Hit_Run_Control.hpp"
@@ -7,7 +9,7 @@ class Hit_Transfer_Control : public rtos::task<>{
 public:
   Hit_Transfer_Control(Hit_Run_Control & _hit_run_control):
     task(6, "Hit_Transfer_Control"),
-    _hit_run_control(_hit_run_control), 
+    _hit_run_control(_hit_run_control),
     timeReached_flag(this, "flag")
   {}
   //
@@ -46,3 +48,5 @@ private:
   enum class State{ IDLE, ACTIVE};
   State _state = State::IDLE;
 };
+
+#endif

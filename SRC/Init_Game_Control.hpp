@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INIT_GAME_CONTROL_HPP
+#define INIT_GAME_CONTROL_HPP
 #include "hwlib.hpp"
 #include "rtos.hpp"
 #include "Keypad.hpp"
@@ -60,3 +61,5 @@ private:
   enum class State { IDLE, KEYPRESSED, NUMBER_ENTERED, DONE};
   State _state = State::IDLE;
 };
+
+#endif

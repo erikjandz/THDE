@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RECEIVE_IR_LISTENER_HPP
+#define RECEIVE_IR_LISTENER_HPP
 #include "hwlib.hpp"
 #include "rtos.hpp"
 #include <array>
@@ -6,7 +7,7 @@
 class Receive_IR_Listener : public rtos::task<>
 {
 public:
-    Receive_IR_Listener(unsigned int priority) : 
+    Receive_IR_Listener(unsigned int priority) :
         task(priority, "Receive_IR_Listener"),
     _messageFlag(this, "msgflag")
     {
@@ -49,3 +50,5 @@ protected:
         return weaponPower;
     }
 };
+
+#endif

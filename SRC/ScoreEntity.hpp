@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SCOREENTITY_HPP
+#define SCOREENTITY_HPP
 
 class ScoreEntity{
 public:
@@ -18,3 +19,5 @@ private:
     int _score;
 
 };
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SEND_IR_MESSAGE_CONTROL_HPP
+#define SEND_IR_MESSAGE_CONTROL_HPP
 #include "IR_Sender.hpp"
 #include "hwlib.hpp"
 #include "rtos.hpp"
@@ -24,7 +25,7 @@ public:
                         break;
                     case State::SEND_MESSAGE:
                         auto msg = _MessagePool.read();
-                        
+
                         for(auto i : msg)
                         {
                             _send_bit( i );
@@ -46,7 +47,7 @@ public:
         _MessageFlag.set();
 
     }
-    
+
 private:
     IR_sender & _IR_sender;
     rtos::pool< std::array<bool, 16> > _MessagePool;
@@ -71,3 +72,5 @@ private:
         }
     }
 };
+
+#endif

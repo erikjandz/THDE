@@ -1,4 +1,5 @@
-#pragma once
+#ifndef IR_RECEIVER_HPP
+#define IR_RECEIVER_HPP
 #include "hwlib.hpp"
 
 class IR_receiver{
@@ -100,3 +101,5 @@ private:
         }
     }
 };
+
+#endif

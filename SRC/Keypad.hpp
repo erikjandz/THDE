@@ -1,4 +1,5 @@
-#pragma once
+#ifndef KEYPAD_HPP
+#define KEYPAD_HPP
 #include "hwlib.hpp"
 
 class Keypad
@@ -9,9 +10,11 @@ public:
   {
 
   }
-  
+
   char getKeyPressed() { return _keyPad.getc(); }
 
 private:
   hwlib::keypad<16> & _keyPad;
 };
+
+#endif

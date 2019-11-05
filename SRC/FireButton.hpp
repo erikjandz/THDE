@@ -1,4 +1,6 @@
-#pragma once
+#ifndef FIREBUTTON_HPP
+#define FIREBUTTON_HPP
+
 #include "hwlib.hpp"
 
 class FireButton
@@ -19,3 +21,5 @@ public:
 private:
 	hwlib::target::pin_in _button;
 };
+
+#endif

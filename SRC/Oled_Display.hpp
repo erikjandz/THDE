@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OLED_DISPLAY_HPP
+#define OLED_DISPLAY_HPP
 #include "hwlib.hpp"
 #include "rtos.hpp"
 #include <array>
@@ -23,7 +24,7 @@ public:
 		_textWriter(textWriter),
 		_window(window)
 	{
-	    
+
 	}
 
 	void clear()
@@ -35,7 +36,7 @@ public:
 	void showText(const char * text)
 	{
 		int i = 0;
-		std::array<IntChar, 100> temp; 
+		std::array<IntChar, 100> temp;
 
 		while(text[i] != '\0')
 		{
@@ -50,7 +51,7 @@ public:
 	void showNumber(int number)
 	{
 		std::array<IntChar, 100> temp;
-		temp[0] = IntChar(false, number, 0); 
+		temp[0] = IntChar(false, number, 0);
 		_displayPool.write(temp);
 		_displayFlag.set();
 	}
@@ -96,7 +97,7 @@ protected:
 							break;
 						}
 					}
-					
+
 					_state = State::IDLE;
 					break;
 			}
@@ -113,3 +114,5 @@ private:
 	enum class State { IDLE, ACTIVE };
 	State _state = State::IDLE;
 };
+
+#endif

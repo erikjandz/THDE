@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TIME_RUN_CONTROL_HPP
+#define TIME_RUN_CONTROL_HPP
 #include "hwlib.hpp"
 #include "rtos.hpp"
 #include "Oled_Display.hpp"
@@ -107,3 +108,5 @@ private:
 	Hit_Transfer_Control * _transferControl = nullptr;
 	Hit_Run_Control * _hitControl = nullptr;
 };
+
+#endif

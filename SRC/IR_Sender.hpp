@@ -1,4 +1,5 @@
-#pragma once
+#ifndef IR_SENDER_HPP
+#define IR_SENDER_HPP
 #include "hwlib.hpp"
 #include "rtos.hpp"
 
@@ -17,3 +18,5 @@ public:
 private:
     hwlib::target::d2_36kHz & _pin;
 };
+
+#endif

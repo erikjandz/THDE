@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HIT_RUN_CONTROL_HPP
+#define HIT_RUN_CONTROL_HPP
+
 #include "hwlib.hpp"
 #include "rtos.hpp"
 #include "Receive_IR_Listener.hpp"
@@ -33,7 +35,7 @@ public:
                       {
                         _state = State::DISPLAY_SCORE;
                       }
-                      
+
                       break;
                   }
 
@@ -98,3 +100,5 @@ private:
       enum class State { IDLE, UPDATE_SCORE, DISPLAY_SCORE };
       State _state = State::IDLE;
 };
+
+#endif
