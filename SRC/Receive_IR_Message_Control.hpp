@@ -5,24 +5,30 @@
 #include <array>
 
 template<unsigned int N>
-class Receive_IR_Message_Control: public rtos::task<>{
+class Receive_IR_Message_Control: public rtos::task<>
+{
 public:
     Receive_IR_Message_Control(IR_receiver & _IR_Receiver, std::array<Receive_IR_Listener*, N> _IR_Listeners):
+        task(1, "Receive_IR_Message_Control"),
         _IR_Receiver( _IR_Receiver ),
         _IR_Listeners( _IR_Listeners)
         {}
 
-    void main()override{
-        for(;;){
+    void main() override
+    {
+        for(;;)
+        {
             std::array<bool, 16> message = _IR_Receiver.receiveMessage();
-            for(auto i : _IR_Listeners){
+            for(auto i : _IR_Listeners)
+            {
                 i->ReceiveMessage(message);
             }
             hwlib::wait_us(100);
         }
     }
 
-    void decode(std::array<bool, 16> array){
+    void decode(std::array<bool, 16> array)
+    {
         int playerID = 0;
         int weaponPower = 0;
         int index = 1;

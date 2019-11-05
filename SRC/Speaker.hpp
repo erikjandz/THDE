@@ -6,6 +6,7 @@
 class Speaker : public rtos::task<> {
 public:
   Speaker(hwlib::target::pin_out& pin): 
+  task(10, "Speaker"),
   _pin( pin ),
    _end_tone_flag(this, "end"),
    _shoot_tone_flag(this, "shoot"),

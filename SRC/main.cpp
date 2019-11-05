@@ -11,6 +11,8 @@
 #include "Send_IR_Message_Control.hpp"
 #include "Receive_IR_Message_Control.hpp"
 #include "Keypad.hpp"
+#include "Init_Game_Control.hpp"
+//#include "Hit_Transfer_Control.hpp"
 
 int main()
 {
@@ -40,9 +42,9 @@ int main()
     auto firePin     = hwlib::target::pin_in(hwlib::target::pins::d7);
     auto speakerPin  = hwlib::target::pin_out(hwlib::target::pins::d8);
     auto sendPin     = hwlib::target::d2_36kHz();
-	auto receivePin  = target::pin_in( target::pins::d9 );
-   	auto receiveGnd  = target::pin_out( target::pins::d10 );
-   	auto receiveVCC  = target::pin_out( target::pins::d11 );
+    auto receivePin  = target::pin_in( target::pins::d8 );
+   	auto receiveGnd  = target::pin_out( target::pins::d9 );
+   	auto receiveVCC  = target::pin_out( target::pins::d10 );
    	receiveGnd.write( 0 );
    	receiveVCC.write( 1 );
    	receiveGnd.flush();
@@ -56,13 +58,15 @@ int main()
 
     // Task objects
     auto display   = Oled_Display(displayOLED, textWriter);
-    auto parameter = Game_Parameter_Control();
     auto send      = Send_IR_Message_Control(irSender);
     auto speaker   = Speaker(speakerPin);
-    auto hit       = Hit_Run_Control(display, speaker);
-    auto time      = Time_Run_Control(display, hit);
+    auto time      = Time_Run_Control(display, speaker);
+    auto parameter = Game_Parameter_Control(time);
+    auto hit       = Hit_Run_Control(display, speaker, parameter);
+    time.giveHitControlPointer(&hit);
     auto receive   = Receive_IR_Message_Control(irReceiver, std::array<Receive_IR_Listener*, 2> { &hit, &parameter });
     auto shoot     = Shoot_Run_Control(hit, parameter, send, fireButton, speaker);
+   	auto init      = Init_Game_Control(keyPad, display, send);
     (void) display;
     (void) parameter;
    	(void) send;

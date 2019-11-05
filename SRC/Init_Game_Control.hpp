@@ -27,7 +27,7 @@ public:
           k = _keyPad.getKeyPressed();
           if(k >= '0' && k <= '9'){
             _display.clear();
-            _display.showText(k);
+            _display.showText(&k);
             _display.showText(" pressed");
           }
       }

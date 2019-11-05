@@ -1,3 +1,4 @@
+#pragma once
 #include "hwlib.hpp"
 
 class Keypad

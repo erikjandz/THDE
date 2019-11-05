@@ -17,7 +17,7 @@ class Oled_Display final : public rtos::task<>
 {
 public:
 	Oled_Display(hwlib::glcd_oled & window, hwlib::terminal_from & textWriter) :
-		task("Oled_Display"),
+		task(8, "Oled_Display"),
 		_displayFlag(this, "_displayFlag"),
 		_displayPool("_displayPool"),
 		_textWriter(textWriter),
@@ -34,7 +34,6 @@ public:
 
 	void showText(const char * text)
 	{
-		_displayFlag.set();
 		int i = 0;
 		std::array<IntChar, 100> temp; 
 
@@ -45,16 +44,17 @@ public:
 		}
 
 		_displayPool.write(temp);
+		_displayFlag.set();
 	}
 
 	void showNumber(int number)
 	{
-		_displayFlag.set();
 		std::array<IntChar, 100> temp;
 		temp[0] = IntChar(false, number, 0); 
 		_displayPool.write(temp);
+		_displayFlag.set();
 	}
-	
+
 	void newLine()
 	{
 		_textWriter << "\n";

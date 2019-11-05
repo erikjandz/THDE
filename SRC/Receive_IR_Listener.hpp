@@ -3,12 +3,18 @@
 #include "rtos.hpp"
 #include <array>
 
-class Receive_IR_Listener : public rtos::task<>{
+class Receive_IR_Listener : public rtos::task<>
+{
 public:
-    Receive_IR_Listener() : _messageFlag(this, "msgflag")
-    {}
+    Receive_IR_Listener(unsigned int priority) : 
+        task(priority, "Receive_IR_Listener"),
+    _messageFlag(this, "msgflag")
+    {
 
-    void ReceiveMessage(std::array< bool, 16> message){
+    }
+
+    void ReceiveMessage(std::array< bool, 16> message)
+    {
         _messagePool.write(message);
         _messageFlag.set();
     }
