@@ -27,6 +27,11 @@ HEADERS += Send_IR_Message_Control.hpp
 HEADERS += Shoot_Run_Control.hpp
 HEADERS += Speaker.hpp
 HEADERS += Time_Run_Control.hpp
+SOURCES += Game_Parameter_Control.cpp
+SOURCES += Hit_Run_Control.cpp
+SOURCES += Hit_Transfer_Control.cpp
+SOURCES += Shoot_Run_Control.cpp
+SOURCES += Time_Run_Control.cpp
 
 #HEADERS += transmission.hpp
 # other places to look for files for this project

@@ -3,13 +3,14 @@
 
 #include "hwlib.hpp"
 #include "rtos.hpp"
-#include "Hit_Run_Control.hpp"
+
+class Hit_Run_Control;
 
 class Hit_Transfer_Control : public rtos::task<>{
 public:
-  Hit_Transfer_Control(Hit_Run_Control & _hit_run_control):
+  Hit_Transfer_Control(Hit_Run_Control * hit_run_control):
     task(6, "Hit_Transfer_Control"),
-    _hit_run_control(_hit_run_control),
+    _hit_run_control(hit_run_control),
     timeReached_flag(this, "flag")
   {}
   //
@@ -23,27 +24,14 @@ public:
   //   }
   // }
 
-  void main()override{
-    for(;;){
-      switch(_state){
-        case State::IDLE:
-          wait(timeReached_flag);
-          _state = State::ACTIVE;
-          break;
-        case State::ACTIVE:
-          int score = _hit_run_control.getScore();
-          hwlib::cout << score;
-          break;
-      }
-    }
-  }
 
-  void TimeFlagSet(){
-    timeReached_flag.set();
-  }
+    void TimeFlagSet();
+
+protected:
+	void main() override;
 
 private:
-  Hit_Run_Control & _hit_run_control;
+  Hit_Run_Control * _hit_run_control = nullptr;
   rtos::flag timeReached_flag;
   enum class State{ IDLE, ACTIVE};
   State _state = State::IDLE;

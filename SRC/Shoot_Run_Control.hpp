@@ -2,14 +2,16 @@
 #define SHOOT_RUN_CONTROL_HPP
 #include "hwlib.hpp"
 #include "rtos.hpp"
-#include "Hit_Run_Control.hpp"
-#include "Game_Parameter_Control.hpp"
-#include "Send_IR_Message_Control.hpp"
 #include "FireButton.hpp"
+#include "Send_IR_Message_Control.hpp"
+#include "Speaker.hpp"
+
+class Hit_Run_Control;
+class Game_Parameter_Control;
 
 class Shoot_Run_Control: public rtos::task<>{
 public:
-    Shoot_Run_Control(Hit_Run_Control & hit_run_control, Game_Parameter_Control & game_parameter_control, Send_IR_Message_Control & send_ir_message_control, FireButton & firebutton, Speaker & speaker):
+    Shoot_Run_Control(Hit_Run_Control * hit_run_control, Game_Parameter_Control * game_parameter_control, Send_IR_Message_Control & send_ir_message_control, FireButton & firebutton, Speaker & speaker):
         task(3, "Shoot_Run_Control"),
         _hit_run_control(hit_run_control),
         _game_parameter_control(game_parameter_control),
@@ -20,52 +22,12 @@ public:
 
     }
 
-    void main() override
-    {
-        for(;;)
-        {
-            switch( _state )
-            {
-                case State::IDLE:
-                {
-                    hwlib::wait_ms( 60 );
-                    if(_fireButton.isButtonPressed() && !_buttonPressed)
-                    {
-                        hwlib::cout << "button";
-                        _buttonPressed = true;
-                        _state = State::BUTTON_PRESSED;
-                    }
-
-                    if(!_fireButton.isButtonPressed())
-                    {
-                       _buttonPressed = false;
-                    }
-                    break;
-                }
-
-                case State::BUTTON_PRESSED:
-                    if(!_hit_run_control.shootIsAvailable())
-                    {
-                        hwlib::cout << "BROKEN";
-                        _state = State::IDLE;
-                        break;
-                    }
-
-                    int playerID = _game_parameter_control.getPlayerID();
-                    int weaponPower = _game_parameter_control.getWeaponPower();
-                   // hwlib::cout << playerID << " " << weaponPower << hwlib::endl;
-                    decode(playerID, weaponPower);
-                    //_speaker.playShootTone();
-                    _send_ir_message_control.send_message(_message);
-                    _state = State::IDLE;
-                    break;
-            }
-        }
-    }
+protected:
+	void main() override;
 
 private:
-    Hit_Run_Control & _hit_run_control;
-    Game_Parameter_Control & _game_parameter_control;
+    Hit_Run_Control * _hit_run_control;
+    Game_Parameter_Control * _game_parameter_control;
     Send_IR_Message_Control & _send_ir_message_control;
     FireButton & _fireButton;
     Speaker & _speaker;

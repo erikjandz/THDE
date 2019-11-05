@@ -4,9 +4,10 @@
 #include "rtos.hpp"
 #include "Oled_Display.hpp"
 #include "Speaker.hpp"
-#include "Hit_Transfer_Control.hpp"
-#include "Hit_Run_Control.hpp"
 #include <cstring>
+
+class Hit_Transfer_Control;
+class Hit_Run_Control;
 
 class Time_Run_Control : public rtos::task<>
 {
@@ -22,6 +23,10 @@ public:
 
 	}
 
+	void setTime(int time);
+	int getTime();
+
+
 	void giveHitControlPointer(Hit_Run_Control * instance)
 	{
 		_hitControl = instance;
@@ -32,67 +37,9 @@ public:
 		_transferControl = instance;
 	}
 
-	void setTime(int time)
-	{
-		_time_set_pool.write(time);
-		_time_set_flag.set();
-	}
-
-	int getTime()
-	{
-		return _timeRemaining;
-	}
 
 protected:
-	void main() override
-	{
-		for(;;)
-		{
-			switch(_state)
-			{
-				case State::IDLE:
-				{
-				  	wait( _time_set_flag);
-					_state = State::INIT;
-					break;
-				}
-
-				case State::INIT:
-					_timeRemaining = _time_set_pool.read();
-					_state = State::COUNTDOWN;
-					break;
-
-				case State::COUNTDOWN:
-					wait( _clock);
-					_state = State::ACTIVE;
-					break;
-
-				case State::ACTIVE:
-					_timeRemaining--;
-					_display.clear();
-					_display.showText("Time:");
-					_display.newLine();
-					_display.showNumber(_timeRemaining);
-					_display.newLine();
-					_display.showText("Score:");
-					_display.newLine();
-					_display.showNumber(_hitControl->getScore());
-					_display.flush();
-					_state = State::COUNTDOWN;
-					if(_timeRemaining <= 0){
-						_transferControl->TimeFlagSet();
-						_state = State::DONE;
-					}
-					break;
-
-				case State::DONE:
-					_speaker.playEndTone();
-					hwlib::wait_ms(1000000);
-					break;
-			}
-		}
-	}
-
+	void main() override;
 private:
 	int _timeRemaining = -1;
 

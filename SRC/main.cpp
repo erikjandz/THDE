@@ -57,18 +57,18 @@ int main()
     auto keypad     = Keypad(kp_object);
 
     // Task objects
+    auto send      = Send_IR_Message_Control(irSender);
     auto display   = Oled_Display(displayOLED, textWriter);
     auto speaker   = Speaker(speakerPin);
     auto time      = Time_Run_Control(display, speaker);
-    auto parameter = Game_Parameter_Control(keypad, display);
-    auto hit       = Hit_Run_Control(display, speaker, parameter);
-    auto transfer  = Hit_Transfer_Control(hit);
+    auto init      = Init_Game_Control(keypad, display, send);
+    auto parameter = Game_Parameter_Control(&keypad, &display, &time, &init);
+    auto hit       = Hit_Run_Control(&display, &speaker, &parameter);
+    auto transfer  = Hit_Transfer_Control(&hit);
     time.giveHitControlPointer(&hit);
     time.giveTransferControlPointer(&transfer);
     auto receive   = Receive_IR_Message_Control(irReceiver, std::array<Receive_IR_Listener*, 2> { &hit, &parameter });
-    auto send      = Send_IR_Message_Control(irSender);
-    auto shoot     = Shoot_Run_Control(hit, parameter, send, fireButton, speaker);
-   	auto init      = Init_Game_Control(keypad, display, send);
+    auto shoot     = Shoot_Run_Control(&hit, &parameter, send, fireButton, speaker);
     (void) display;
     (void) parameter;
    	(void) send;

@@ -3,6 +3,7 @@
 #include "hwlib.hpp"
 #include "rtos.hpp"
 #include "Keypad.hpp"
+#include "Send_IR_Message_Control.hpp"
 
 class Init_Game_Control : public rtos::task<>{
 public:
@@ -10,16 +11,28 @@ public:
     task(5, "Init_Game_Control"),
     _keyPad(keypad),
     _display(display),
-    _send_ir_message_control(send_ir_message_control)
+    _send_ir_message_control(send_ir_message_control),
+    _leaderFlag(this, "_leaderFlag"),
+    _clock(this, 60'000, "clockkk")
     {}
+
+    void setLeader()
+    {
+      _leaderFlag.set();
+    }
 
   void main()override{
     char k;
     char key;
     for(;;){
       switch( _state ){
+        case State::BEGIN:
+          wait(_leaderFlag);
+          _state = State::IDLE;
+          break;
+
         case State::IDLE:
-          hwlib::wait_ms( 60 );
+          wait( _clock);
           k = _keyPad.getKeyPressed();
           if(k == 'C'){
             _state = State::KEYPRESSED;
@@ -45,8 +58,9 @@ public:
           }
           break;
         case State::DONE:
-          //_send_ir_message_control.send_message(0, key - 48);
-          hwlib::wait_ms(1000000);
+          decode(0, key-48);
+          _send_ir_message_control.send_message(_message);
+          hwlib::wait_ms(100000000);
           break;
       }
     }
@@ -57,9 +71,40 @@ private:
   Keypad & _keyPad;
   Oled_Display & _display;
   Send_IR_Message_Control & _send_ir_message_control;
+  rtos::flag _leaderFlag;
+  rtos::clock _clock;
+  enum class State { IDLE, KEYPRESSED, NUMBER_ENTERED, DONE, BEGIN};
+  State _state = State::BEGIN;
+  std::array<bool, 16> _message;
 
-  enum class State { IDLE, KEYPRESSED, NUMBER_ENTERED, DONE};
-  State _state = State::IDLE;
+  void decode(int playerID, int gameTime)
+  {
+      //decode the message to a bool array ready to send
+      _message[0] = 1;
+      int index = 1;
+      for(int i = 16; i >= 1; i /= 2){
+        if(playerID >= i){
+          playerID -= i;
+          _message[index] = 1;
+        }else{
+          _message[index] = 0;
+        }
+        index ++;
+      }
+      for(int i = 16; i >= 1; i /= 2){
+        if(gameTime >= i){
+          gameTime -= i;
+          _message[index] = 1;
+        }else{
+          _message[index] = 0;
+        }
+        index ++;
+      }
+      //add the control bits
+      for(int i = 1; i < 6; i ++){
+        _message[10 + i] = _message[i] ^ _message[i + 5];
+      }
+    }
 };
 
 #endif
