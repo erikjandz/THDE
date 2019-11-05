@@ -3,10 +3,11 @@
 #include "rtos.hpp"
 #include "Receive_IR_Listener.hpp"
 #include "Time_Run_Control.hpp"
+#include "Keypad.hpp"
 
 class Game_Parameter_Control: public Receive_IR_Listener{
 public:
-    Game_Parameter_Control(keyPad & keypad, Oled_Display & display, Time_Run_Control & time_run_control):
+    Game_Parameter_Control(Keypad & keypad, Oled_Display & display, Time_Run_Control & time_run_control):
         _keypad( keypad ),
         _display( display ),
         _time_run_control( time_run_control)
@@ -58,7 +59,7 @@ public:
                     break;
                 case State::IF_LEADER:
                     //if you get a message from the leader
-                    if(_GetPlayerID(_MessagePool.read()) == 0){
+                    if(_GetPlayerID(_messagePool.read()) == 0){
                         _state = State::ACTIVE;
                     }else{
                         _state = State::WAITING_FOR_LEADER;
@@ -86,7 +87,7 @@ private:
     int _weaponPower;
     rtos::pool< int > _playerIDPool;
     rtos::pool< int > _weaponPowerPool;
-    keyPad & _keypad;
+    Keypad & _keypad;
     Oled_Display & _display;
     Time_Run_Control & _time_run_control;
 

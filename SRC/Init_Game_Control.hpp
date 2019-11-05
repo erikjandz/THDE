@@ -24,7 +24,7 @@ public:
           }
           break;
         case State::KEYPRESSED:
-          hwlib;:wait_ms( 60 );
+          hwlib::wait_ms( 60 );
           _display.showText("enter key");
           k = _keyPad.getKeyPressed();
           if(k >= '0' && k <= '9'){
@@ -58,32 +58,4 @@ private:
 
   enum class State { IDLE, KEYPRESSED, NUMBER_ENTERED, DONE};
   State _state = State::IDLE;
-
-  void decode(int playerID, int weaponPower){
-      //decode the message to a bool array ready to send
-      _message[0] = 1;
-      int index = 1;
-      for(int i = 16; i >= 1; i /= 2){
-        if(_playerID >= i){
-          _playerID -= i;
-          _message[index] = 1;
-        }else{
-          _message[index] = 0;
-        }
-        index ++;
-      }
-      for(int i = 16; i >= 1; i /= 2){
-        if(_weaponPower >= i){
-          _weaponPower -= i;
-          _message[index] = 1;
-        }else{
-          _message[index] = 0;
-        }
-        index ++;
-      }
-      //add the control bits
-      for(int i = 1; i < 6; i ++){
-        _message[10 + i] = _message[i] ^ _message[i + 5];
-      }
-  }
 };

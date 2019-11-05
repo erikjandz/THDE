@@ -41,7 +41,6 @@ namespace beep {
      }
   }
 
-
   void uhoh( hwlib::pin_out & lsp ) {
      for (int i=1000; i<1244; i=i*1.01) {
         beep(lsp,i,10'000);
