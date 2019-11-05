@@ -10,7 +10,6 @@
 
 # source & header files in this project (main.cpp is automatically assumed)
 
-HEADERS += Beep.hpp
 HEADERS += FireButton.hpp
 HEADERS += Game_Parameter_Control.hpp
 HEADERS += Hit_Run_Control.hpp

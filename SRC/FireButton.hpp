@@ -3,6 +3,7 @@
 
 #include "hwlib.hpp"
 
+// This class serves as an interface for a hardware button which can be pressed
 class FireButton
 {
 public:
@@ -12,6 +13,7 @@ public:
 
 	}
 
+	// Returns true is the button is pressed
 	bool isButtonPressed()
 	{
 		_button.refresh();

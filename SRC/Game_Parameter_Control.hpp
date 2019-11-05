@@ -10,9 +10,12 @@ class Oled_Display;
 class Time_Run_Control;
 class Init_Game_Control;
 
+// This class is to set parameters for each player: playerID & weaponPower. 
+// It also listens to the game leader, which sets the play time.
 class Game_Parameter_Control: public Receive_IR_Listener
 {
 public:
+	// The constructor needs pointers to a few classes so they can be accessed in the RTOS main-loop
     Game_Parameter_Control(Keypad * keypad, Oled_Display * display, Time_Run_Control * time_run_control, Init_Game_Control * init):
    		 Receive_IR_Listener(4),
         _keypad( keypad ),
@@ -24,7 +27,10 @@ public:
       _weaponPowerPool.write(0);
     }
 
+    // This function returns the playerID of this current device
     int getPlayerID();
+
+     // This function returns the weaponPower of this current device
     int getWeaponPower();
 
 protected:

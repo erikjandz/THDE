@@ -10,8 +10,10 @@ class Oled_Display;
 class Speaker;
 class Game_Parameter_Control;
 
+// This class serves as a hit receiver. When it receives an IR signal, it lowers the current player's score.
 class Hit_Run_Control: public Receive_IR_Listener{
 public:
+	// The constructor needs pointers to a few classes so they can be accessed in the RTOS main-loop
       Hit_Run_Control(Oled_Display * display, Speaker * speaker, Game_Parameter_Control * parameterControl):
         Receive_IR_Listener(7),
          _displayFlag(this, "displayFlagHit"),
@@ -20,8 +22,13 @@ public:
           _parameterControl(parameterControl)
           {}
 
+       // This function returns if the player is allowed to shoot. For example when he is dead, he cannot shoot.
        bool shootIsAvailable();
+
+       // This function returns the current player's score
        int getScore();
+
+       // hier moet ik morgen nog even naar kijken NIET COMMENTEN xx hugo no homo lol hoi joery
        void displayScore();
 
 protected:
