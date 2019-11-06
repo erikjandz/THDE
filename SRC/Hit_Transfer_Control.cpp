@@ -1,3 +1,8 @@
+//          Copyright Youri de Vor, Erik de Zeeuw, Hugo Cornel, Matthijs Koelewijn 2019 - 2020.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          https://www.boost.org/LICENSE_1_0.txt)
+
 #include "Hit_Transfer_Control.hpp"
 #include "Hit_Run_Control.hpp"
 #include "Time_Run_Control.hpp"
@@ -19,12 +24,16 @@ void Hit_Transfer_Control::main()
 	      break;
 
 	    case State::ACTIVE:
-	  		auto list = _hit_run_control->getHitList();
-	  		for(auto & element : list)
+	  		auto list = _hit_run_control->getHitList(); // Get list of hits
+
+	  		for(auto & element : list) // Loop through hits
 	  		{
-	  			int playerID = element.getPlayerID();
-	  			int weaponPower = element.getWeaponPower();
-	  			hwlib::cout << "Player " << playerID << " hit you with weapon power" << weaponPower << hwlib::endl;
+	  			if(element.getPlayerID() != -1) // If not uninitialized
+	  			{
+		  			int playerID = element.getPlayerID();
+		  			int weaponPower = element.getWeaponPower();
+		  			hwlib::cout << "Player " << playerID << " hit you with weapon power" << weaponPower << hwlib::endl;
+	  			}
 	  		}
 
 		_state = State::IDLE;

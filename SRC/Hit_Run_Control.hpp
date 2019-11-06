@@ -26,7 +26,9 @@ public:
           _speaker( speaker ),
           _parameterControl(parameterControl),
           _scoreEntity(100)
-          {}
+       {
+          _hitList.fill(HitEntity(-1, -1));
+       }
 
        // This function returns if the player is allowed to shoot. For example when he is dead, he cannot shoot.
        bool shootIsAvailable();
