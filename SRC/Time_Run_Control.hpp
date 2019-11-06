@@ -18,6 +18,7 @@ class Hit_Run_Control;
 class Time_Run_Control : public rtos::task<>
 {
 public:
+	// Constructor needs the display & speaker references
 	Time_Run_Control(Oled_Display & display, Speaker & speaker):
 		task(9, "Time_Run_Control"),
 		_clock(this, 1'000'000, "_clock"),
@@ -29,15 +30,19 @@ public:
 
 	}
 
+	// Functions that sets the starting game time
 	void setTime(int time);
+
+	// Function that returns the game time
 	int getTime();
 
-
+	// Function that passes a pointer to Hit_Run_Control 
 	void giveHitControlPointer(Hit_Run_Control * instance)
 	{
 		_hitControl = instance;
 	}
 
+	// Function that passes a pointer to Hit_Transfer_Control 
 	void giveTransferControlPointer(Hit_Transfer_Control * instance)
 	{
 		_transferControl = instance;
@@ -46,8 +51,10 @@ public:
 
 protected:
 	void main() override;
+
 private:
 	int _timeRemaining = -1;
+	bool _timeSet = false;
 
 	rtos::clock _clock;
 	rtos::flag _time_set_flag;

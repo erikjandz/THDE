@@ -10,14 +10,17 @@
 #include "rtos.hpp"
 #include <array>
 
+// This class sends IR messages
 class Send_IR_Message_Control: public rtos::task<>{
 public:
+    // Constructor needs IR sender
     Send_IR_Message_Control(IR_sender & _IR_sender):
      task(2, "Send_IR_Message_Control"),
         _IR_sender( _IR_sender ),
         _MessageFlag(this, "msgFlag")
         {}
 
+    // RTOS main
     void main()override
     {
             for(;;)
@@ -47,6 +50,7 @@ public:
             }
     }
 
+    // This function is an interface for other classes to send a message
     void send_message(std::array<bool, 16> message){
         _MessagePool.write(message);
         _MessageFlag.set();
@@ -61,6 +65,7 @@ private:
     enum class State { IDLE, SEND_MESSAGE };
     State _state = State::IDLE;
 
+    // This function sends 1 bit based on pauses
     void _send_bit(bool bit){
         //if bit is a 1
         if(bit){

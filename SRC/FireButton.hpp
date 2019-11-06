@@ -8,10 +8,17 @@
 
 #include "hwlib.hpp"
 
+/// @file
+/// \brief
+/// Class for fire button
+/// \details
 /// This class serves as an interface for a hardware button which can be pressed
 class FireButton
 {
 public:
+	/// \brief
+	/// Constructor
+	/// \details
 	// Constructor needs button pin
 	FireButton(hwlib::target::pin_in & pin) :
 		_button(pin)
@@ -19,6 +26,9 @@ public:
 
 	}
 
+	/// \brief
+	/// Button press function
+	/// \details
 	// Returns true is the button is pressed
 	bool isButtonPressed()
 	{

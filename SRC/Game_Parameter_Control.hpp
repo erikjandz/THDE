@@ -15,6 +15,10 @@ class Oled_Display;
 class Time_Run_Control;
 class Init_Game_Control;
 
+/// @file
+/// \brief
+/// Class for setting game parameters
+/// \details
 /// This class is to set game parameters for the player: playerID & weaponPower as well as receiving playtime from the
 ///
 /// This class inherits from the Receive_IR_Listener interface class.
@@ -23,6 +27,9 @@ class Init_Game_Control;
 class Game_Parameter_Control: public Receive_IR_Listener
 {
 public:
+	/// \brief
+	/// Constructor
+	/// \details
 	// The constructor needs pointers to a few classes so they can be accessed in the RTOS main-loop
     Game_Parameter_Control(Keypad * keypad, Oled_Display * display, Time_Run_Control * time_run_control, Init_Game_Control * init):
    		 Receive_IR_Listener(4),
@@ -35,13 +42,22 @@ public:
       _weaponPowerPool.write(0);
     }
 
+	/// \brief
+	/// Get playerID function
+	/// \details
     // This function returns the playerID of this current device
     int getPlayerID();
 
+	/// \brief
+	/// Get weaponPower function
+	/// \details
      // This function returns the weaponPower of this current device
     int getWeaponPower();
 
 protected:
+	/// \brief
+	/// Main function
+	/// \details
     // RTOS main
     void main() override;
 

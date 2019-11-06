@@ -14,6 +14,7 @@
 class Hit_Run_Control;
 class Game_Parameter_Control;
 
+// This class waits for a button press to then shoot to another player
 class Shoot_Run_Control: public rtos::task<>{
 public:
     Shoot_Run_Control(Hit_Run_Control * hit_run_control, Game_Parameter_Control * game_parameter_control, Send_IR_Message_Control & send_ir_message_control, FireButton & firebutton, Speaker & speaker):
@@ -28,6 +29,7 @@ public:
     }
 
 protected:
+    // RTOS main
 	void main() override;
 
 private:
@@ -42,8 +44,9 @@ private:
     enum class State { WAITING };
     State _state = State::WAITING;
 
-    void decode(int playerID, int weaponPower){
-        //decode the message to a bool array ready to send
+    // This function encodes the IR message from playerID & weaponPower
+    void encode(int playerID, int weaponPower){
+        // encode the message to a bool array ready to send
         _message[0] = 1;
         int index = 1;
         for(int i = 16; i >= 1; i /= 2){

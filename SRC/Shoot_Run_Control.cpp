@@ -24,7 +24,7 @@ void Shoot_Run_Control::main()
                     {
                         int playerID = _game_parameter_control->getPlayerID();
                         int weaponPower = _game_parameter_control->getWeaponPower();
-                        decode(playerID, weaponPower);
+                        encode(playerID, weaponPower);
                         _speaker.playShootTone();
                         _send_ir_message_control.send_message(_message);
                     }

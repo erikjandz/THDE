@@ -10,16 +10,19 @@
 #include "IR_Receiver.hpp"
 #include <array>
 
+// This class serves as an IR message receiver
 template<unsigned int N>
 class Receive_IR_Message_Control: public rtos::task<>
 {
 public:
+	// Constructor needs the IR-receiver & IR listeners
     Receive_IR_Message_Control(IR_receiver & _IR_Receiver, std::array<Receive_IR_Listener*, N> _IR_Listeners):
         task(1, "Receive_IR_Message_Control"),
         _IR_Receiver( _IR_Receiver ),
         _IR_Listeners( _IR_Listeners)
         {}
 
+ 	// RTOS main
     void main() override
     {
         for(;;)
@@ -33,6 +36,7 @@ public:
         }
     }
 
+    // This function decodes a 16-bit IR message to playerID & weaponPower
     void decode(std::array<bool, 16> array)
     {
         int playerID = 0;
@@ -56,7 +60,6 @@ public:
                 return;
             }
         }
-        hwlib::cout << playerID << hwlib::endl << weaponPower << hwlib::endl;
     }
 
 private:

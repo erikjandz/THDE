@@ -16,11 +16,18 @@
 class Speaker;
 class Game_Parameter_Control;
 
-// This class serves as a hit receiver. When it receives an IR signal, it lowers the current player's score.
+/// @file
+/// \brief
+/// Class for registering hits
+/// \details
+/// This class serves as a hit receiver. When it receives an IR signal, it lowers the current player's score.
 class Hit_Run_Control: public Receive_IR_Listener
 {
 public:
-      // The constructor needs pointers to a few classes so they can be accessed in the RTOS main-loop
+	  /// \brief
+	  /// Constructor
+	  /// \details
+      /// The constructor needs pointers to a few classes so they can be accessed in the RTOS main-loop
       Hit_Run_Control(Speaker * speaker, Game_Parameter_Control * parameterControl):
       Receive_IR_Listener(7),
           _speaker( speaker ),
@@ -30,10 +37,16 @@ public:
           _hitList.fill(HitEntity(-1, -1));
        }
 
-       // This function returns if the player is allowed to shoot. For example when he is dead, he cannot shoot.
+	   /// \brief
+	   /// Shoot avalible function
+	   /// \details
+       /// This function returns if the player is allowed to shoot. For example when he is dead, he cannot shoot.
        bool shootIsAvailable();
 
-       // This function returns the current player's score
+	   /// \brief
+	   /// Button press function
+	   /// \details
+       /// This function returns the current player's score
        int getScore();
 
        // This function returns the list of hits by other players
