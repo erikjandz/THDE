@@ -57,7 +57,7 @@ void Time_Run_Control::main()
 				if(_timeRemaining <= 0)
 				{
 					_speaker.playEndTone();
-					_state = State::DONE;
+					_state = State::IDLE;
 				}
 				else
 				{

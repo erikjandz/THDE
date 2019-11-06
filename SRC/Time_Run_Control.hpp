@@ -54,7 +54,7 @@ private:
 	rtos::pool< int > _time_set_pool;
 	rtos::pool< int > _time_get_pool;
 
-	enum class State { IDLE, ACTIVE, INIT, COUNTDOWN, DONE};
+	enum class State { IDLE, ACTIVE, INIT, COUNTDOWN};
 	State _state = State::IDLE;
 
 	Oled_Display & _display;

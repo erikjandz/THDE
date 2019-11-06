@@ -69,10 +69,6 @@ private:
   enum class State { IDLE, ENDTONE, SHOOTTONE, DEATHTONE };
   State state = State::IDLE;
 
-    void await( long long unsigned int t ){
-     while( t > hwlib::now_us() ){}
-  };
-
   void beep( hwlib::pin_out & lsp, int f, int d, int fd = 1000 ){
      auto t = hwlib::now_us();
      auto end = t + d;
@@ -81,10 +77,10 @@ private:
          f = f * fd / 1000;
          lsp.write( 1 );
          lsp.flush();
-         wait( p );
+         hwlib::wait_us( p );
          lsp.write( 0 );
          lsp.flush();
-         wait( p );
+         hwlib::wait_us( p );
      }
   }
 
