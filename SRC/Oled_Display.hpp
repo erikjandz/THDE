@@ -9,6 +9,7 @@
 #include "rtos.hpp"
 #include <array>
 
+// A C++ struct that can hold a character & an integer
 struct IntChar
 {
 	IntChar() {}
@@ -19,9 +20,11 @@ struct IntChar
 	char c;
 };
 
+// This class serves as an OLED display
 class Oled_Display final : public rtos::task<>
 {
 public:
+	// HWLIB window and text terminal needed by constructor
 	Oled_Display(hwlib::glcd_oled & window, hwlib::terminal_from & textWriter) :
 		task(8, "Oled_Display"),
 		_displayFlag(this, "_displayFlag"),
@@ -32,12 +35,14 @@ public:
 
 	}
 
+	// This function clears the whole display screen
 	void clear()
 	{
 		_window.clear();
 		_textWriter << "  \f";
 	}
 
+	// This function shows characters on the screen
 	void showText(const char * text)
 	{
 		int i = 0;
@@ -53,6 +58,7 @@ public:
 		_displayFlag.set();
 	}
 
+	// This function shows integers on the screen
 	void showNumber(int number)
 	{
 		std::array<IntChar, 100> temp;
@@ -61,17 +67,20 @@ public:
 		_displayFlag.set();
 	}
 
+	// This function shows newlines on the screen
 	void newLine()
 	{
 		_textWriter << "\n";
 	}
 
+	// This function flushes all writes to the display
 	void flush()
 	{
 		_textWriter << hwlib::flush;
 	}
 
 protected:
+	// RTOS main
 	void main() override
 	{
 		for(;;)

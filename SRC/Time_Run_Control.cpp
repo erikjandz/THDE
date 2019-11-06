@@ -24,22 +24,15 @@ void Time_Run_Control::main()
 			case State::IDLE:
 			{
 			  	wait( _time_set_flag);
-				_state = State::INIT;
-				break;
-			}
-
-			case State::INIT:
 				_timeRemaining = _time_set_pool.read();
 				_time_get_pool.write(_timeRemaining);
 				_state = State::COUNTDOWN;
 				break;
+			}
 
 			case State::COUNTDOWN:
 				wait( _clock);
-				_state = State::ACTIVE;
-				break;
-
-			case State::ACTIVE:
+				
 				_timeRemaining--;
 				_time_get_pool.write(_timeRemaining);
 				_display.clear();
@@ -52,17 +45,13 @@ void Time_Run_Control::main()
 				_display.showNumber(_hitControl->getScore());
 				_display.flush();
 				
-
 				// Check if game finished
 				if(_timeRemaining <= 0)
 				{
 					_speaker.playEndTone();
 					_state = State::IDLE;
 				}
-				else
-				{
-					_state = State::COUNTDOWN;
-				}
+
 				break;
 		}
 	}

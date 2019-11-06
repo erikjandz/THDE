@@ -52,8 +52,8 @@ private:
       int _hitListIndex = 0;
       bool _gameStarted = false;
 
-      enum class State { IDLE, UPDATE_SCORE };
-      State _state = State::IDLE;
+      enum class State { WAITING };
+      State _state = State::WAITING;
 };
 
 #endif

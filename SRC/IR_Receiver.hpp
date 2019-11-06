@@ -7,6 +7,7 @@
 #define IR_RECEIVER_HPP
 #include "hwlib.hpp"
 
+// This class serves as an IR message receiver
 class IR_receiver
 {
 public:

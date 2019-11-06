@@ -39,8 +39,8 @@ private:
     std::array<bool, 16> _message;
     bool _buttonPressed = false;
 
-    enum class State { IDLE, BUTTON_PRESSED };
-    State _state = State::IDLE;
+    enum class State { WAITING };
+    State _state = State::WAITING;
 
     void decode(int playerID, int weaponPower){
         //decode the message to a bool array ready to send

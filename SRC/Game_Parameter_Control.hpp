@@ -55,7 +55,7 @@ private:
     Time_Run_Control * _time_run_control = nullptr;
     Init_Game_Control * _init = nullptr;
 
-    enum class State { IDLE, WAITING_FOR_LEADER, ACTIVE, IF_LEADER, A_PRESSED, B_PRESSED, FIRST_NUMBER_ENTERED};
+    enum class State { IDLE, WAITING_FOR_LEADER, A_PRESSED, B_PRESSED, FIRST_NUMBER_ENTERED};
     State _state = State::IDLE;
 
     bool _isLeader = false;

@@ -35,7 +35,7 @@ private:
   Hit_Run_Control * _hit_run_control = nullptr;
   Time_Run_Control * _time_run_control = nullptr;
   rtos::clock _clock;
-  enum class State{ IDLE, ACTIVE};
+  enum class State{ IDLE};
   State _state = State::IDLE;
   Keypad & _keypad;
 };

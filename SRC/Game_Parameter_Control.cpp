@@ -56,27 +56,16 @@ void Game_Parameter_Control::main()
             case State::WAITING_FOR_LEADER:
                 if(_isLeader)
                 {
-                    hwlib::cout << "kip123";
                     _init->setLeader();
                 }
-                wait( _messageFlag );
-                _state = State::IF_LEADER;
-                break;
 
-            case State::IF_LEADER:
-                hwlib::cout << "hoi";
-                //if you get a message from the leader
-                if(_GetPlayerID(_messagePool.read()) == 0){
-                    _state = State::ACTIVE;
-                }else{
-                    _state = State::WAITING_FOR_LEADER;
+                wait( _messageFlag );
+               
+                if(_GetPlayerID(_messagePool.read()) == 0) // From game leader 
+                {
+                    _time_run_control->setTime(_GetWeaponPower(_messagePool.read())); // Register game time
                 }
-                break;
-            case State::ACTIVE:
-                //decode the time and give it to time_run_control
-                hwlib::cout << "dit is de hemel";
-                _time_run_control->setTime(_GetWeaponPower(_messagePool.read()));
-                hwlib::wait_ms(100000000);
+
                 break;
         }
     }

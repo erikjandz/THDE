@@ -17,26 +17,20 @@ void Hit_Transfer_Control::main()
 	      {
 	      	if(_time_run_control->getTime() <= 0)
 	      	{
-	      		_state = State::ACTIVE;
+	      		auto list = _hit_run_control->getHitList(); // Get list of hits
+
+		  		for(auto & element : list) // Loop through hits
+		  		{
+		  			if(element.getPlayerID() != -1) // If not uninitialized
+		  			{
+			  			int playerID = element.getPlayerID();
+			  			int weaponPower = element.getWeaponPower();
+			  			hwlib::cout << "Player " << playerID << " hit you with weapon power" << weaponPower << hwlib::endl;
+		  			}
+		  		}
 	      	}
 	      }
 	      
-	      break;
-
-	    case State::ACTIVE:
-	  		auto list = _hit_run_control->getHitList(); // Get list of hits
-
-	  		for(auto & element : list) // Loop through hits
-	  		{
-	  			if(element.getPlayerID() != -1) // If not uninitialized
-	  			{
-		  			int playerID = element.getPlayerID();
-		  			int weaponPower = element.getWeaponPower();
-		  			hwlib::cout << "Player " << playerID << " hit you with weapon power" << weaponPower << hwlib::endl;
-	  			}
-	  		}
-
-		_state = State::IDLE;
 	      break;
 	  }
 	}

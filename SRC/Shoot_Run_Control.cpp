@@ -13,14 +13,21 @@ void Shoot_Run_Control::main()
     {
         switch( _state )
         {
-            case State::IDLE:
+            case State::WAITING:
             {
                 hwlib::wait_ms( 60 );
                 if(_fireButton.isButtonPressed() && !_buttonPressed)
                 {
-                    hwlib::cout << "button";
                     _buttonPressed = true;
-                    _state = State::BUTTON_PRESSED;
+                    
+                    if(_hit_run_control->shootIsAvailable())
+                    {
+                        int playerID = _game_parameter_control->getPlayerID();
+                        int weaponPower = _game_parameter_control->getWeaponPower();
+                        decode(playerID, weaponPower);
+                        _speaker.playShootTone();
+                        _send_ir_message_control.send_message(_message);
+                    }
                 }
 
                 if(!_fireButton.isButtonPressed())
@@ -29,22 +36,6 @@ void Shoot_Run_Control::main()
                 }
                 break;
             }
-
-            case State::BUTTON_PRESSED:
-                if(!_hit_run_control->shootIsAvailable())
-                {
-                    hwlib::cout << "BROKEN";
-                    _state = State::IDLE;
-                    break;
-                }
-
-                int playerID = _game_parameter_control->getPlayerID();
-                int weaponPower = _game_parameter_control->getWeaponPower();
-                decode(playerID, weaponPower);
-                _speaker.playShootTone();
-                _send_ir_message_control.send_message(_message);
-                _state = State::IDLE;
-                break;
         }
     }
 }

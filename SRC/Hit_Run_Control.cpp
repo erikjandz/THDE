@@ -6,13 +6,29 @@
   {
       for(;;){
           switch(_state){
-              case State::IDLE:
+              case State::WAITING:
               {
                 _score_pool.write(_scoreEntity.getScore());
                  wait(_messageFlag);
+
                  if(_gameStarted)
                  {
-                  _state = State::UPDATE_SCORE;
+                    auto msg = _messagePool.read();
+                    if(_GetPlayerID(msg) != _parameterControl->getPlayerID()) // Dont hit yourself
+                    {
+                      _hitList[_hitListIndex] = HitEntity(_GetPlayerID(msg), _GetWeaponPower(msg));
+                      _hitListIndex++;
+                      _scoreEntity.setScore(_scoreEntity.getScore() - _GetWeaponPower(msg));
+                      _score_pool.write(_scoreEntity.getScore());
+
+                      if(_scoreEntity.getScore() > 0){ // Still alive
+                          _shoot_available_pool.write( 1 );
+                      }else{ // Dead
+                          _speaker->playDeathTone();
+                          _shoot_available_pool.write( 0 );
+                          _scoreEntity.setScore(0);
+                      }
+                    }
                  }
                 else
                 {
@@ -20,27 +36,6 @@
                 }
 
                 break;
-              }
-
-              case State::UPDATE_SCORE:
-              {
-                  auto msg = _messagePool.read();
-                  if(_GetPlayerID(msg) != _parameterControl->getPlayerID()) // Dont hit yourself
-                  {
-                    _hitList[_hitListIndex] = HitEntity(_GetPlayerID(msg), _GetWeaponPower(msg));
-                    _hitListIndex++;
-                    _scoreEntity.setScore(_scoreEntity.getScore() - _GetWeaponPower(msg));
-                    _score_pool.write(_scoreEntity.getScore());
-
-                    if(_scoreEntity.getScore() > 0){ // Still alive
-                        _shoot_available_pool.write( 1 );
-                    }else{ // Dead
-                        _speaker->playDeathTone();
-                        _shoot_available_pool.write( 0 );
-                    }
-                  }
-                  _state = State::IDLE;
-                  break;
               }
           }
       }
