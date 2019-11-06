@@ -10,8 +10,11 @@
 #include "Keypad.hpp"
 #include "Send_IR_Message_Control.hpp"
 
+/// @file
+/// \brief
+/// Class for init game
+/// \details
 /// Used to send game parameters to other players, but mainly meant to start the game at the same time for all players.
-///
 /// This class takes input from the user, through the keypad, and adds these inputs to an array.
 /// These inputs represent the game time.
 /// This array _message is then sent to other players.
@@ -26,16 +29,20 @@ public:
     _clock(this, 60'000, "clockkk")
     {}
 
-  /// public method to set the _leaderFlag
-  ///
-  /// serves as an interface for other classes to tell Init that this arduino is the game leader.
-  void setLeader()
-    {
-      _leaderFlag.set();
-    }
+	/// \brief
+	/// Function that sets current player to game leader
+	/// \details
+	/// public method to set the _leaderFlag
+	/// serves as an interface for other classes to tell Init that this arduino is the game leader.
+	void setLeader()
+	{
+	  _leaderFlag.set();
+	}
 
+  /// \brief
+  /// Main function
+  /// \details
   /// the main of this class
-  ///
   /// takes care of the task switching and calling the necessary methods to receive input from the keyboard and send messages using the IR transmitter
   void main()override{
     char k;
@@ -96,34 +103,37 @@ private:
   State _state = State::BEGIN;
   std::array<bool, 16> _message;
 
-  void decode(int playerID, int gameTime)
-  {
-      //decode the message to a bool array ready to send
-      _message[0] = 1;
-      int index = 1;
-      for(int i = 16; i >= 1; i /= 2){
-        if(playerID >= i){
-          playerID -= i;
-          _message[index] = 1;
-        }else{
-          _message[index] = 0;
-        }
-        index ++;
-      }
-      for(int i = 16; i >= 1; i /= 2){
-        if(gameTime >= i){
-          gameTime -= i;
-          _message[index] = 1;
-        }else{
-          _message[index] = 0;
-        }
-        index ++;
-      }
-      //add the control bits
-      for(int i = 1; i < 6; i ++){
-        _message[10 + i] = _message[i] ^ _message[i + 5];
-      }
-    }
+	/// \brief
+	/// Function that decodes to playerID and gameTime
+	/// \details
+	void decode(int playerID, int gameTime)
+	{
+	  //decode the message to a bool array ready to send
+	  _message[0] = 1;
+	  int index = 1;
+	  for(int i = 16; i >= 1; i /= 2){
+	    if(playerID >= i){
+	      playerID -= i;
+	      _message[index] = 1;
+	    }else{
+	      _message[index] = 0;
+	    }
+	    index ++;
+	  }
+	  for(int i = 16; i >= 1; i /= 2){
+	    if(gameTime >= i){
+	      gameTime -= i;
+	      _message[index] = 1;
+	    }else{
+	      _message[index] = 0;
+	    }
+	    index ++;
+	  }
+	  //add the control bits
+	  for(int i = 1; i < 6; i ++){
+	    _message[10 + i] = _message[i] ^ _message[i + 5];
+	  }
+	}
 };
 
 #endif

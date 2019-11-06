@@ -9,6 +9,9 @@
 #include "rtos.hpp"
 #include <array>
 
+/// \brief
+/// Struct that hold int & char
+/// \details
 // A C++ struct that can hold a character & an integer
 struct IntChar
 {
@@ -20,10 +23,17 @@ struct IntChar
 	char c;
 };
 
+/// @file
+/// \brief
+/// Class for displaying on screem
+/// \details
 // This class serves as an OLED display
 class Oled_Display final : public rtos::task<>
 {
 public:
+	/// \brief
+	/// Constructor
+	/// \details
 	// HWLIB window and text terminal needed by constructor
 	Oled_Display(hwlib::glcd_oled & window, hwlib::terminal_from & textWriter) :
 		task(8, "Oled_Display"),
@@ -35,6 +45,9 @@ public:
 
 	}
 
+	/// \brief
+	/// Function for clearing screen
+	/// \details
 	// This function clears the whole display screen
 	void clear()
 	{
@@ -42,6 +55,9 @@ public:
 		_textWriter << "  \f";
 	}
 
+	/// \brief
+	/// Function for showing text
+	/// \details
 	// This function shows characters on the screen
 	void showText(const char * text)
 	{
@@ -58,6 +74,9 @@ public:
 		_displayFlag.set();
 	}
 
+	/// \brief
+	/// Function for showing numbers
+	/// \details
 	// This function shows integers on the screen
 	void showNumber(int number)
 	{
@@ -67,12 +86,18 @@ public:
 		_displayFlag.set();
 	}
 
+	/// \brief
+	/// Function for newline on screen
+	/// \details
 	// This function shows newlines on the screen
 	void newLine()
 	{
 		_textWriter << "\n";
 	}
 
+	/// \brief
+	/// Function for flushing to screen
+	/// \details
 	// This function flushes all writes to the display
 	void flush()
 	{
@@ -80,6 +105,9 @@ public:
 	}
 
 protected:
+	/// \brief
+	/// Main function
+	/// \details
 	// RTOS main
 	void main() override
 	{

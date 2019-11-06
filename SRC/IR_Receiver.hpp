@@ -7,15 +7,25 @@
 #define IR_RECEIVER_HPP
 #include "hwlib.hpp"
 
+/// @file
+/// \brief
+/// Class for receiving IR messages
+/// \details
 // This class serves as an IR message receiver
 class IR_receiver
 {
 public:
+	/// \brief
+	/// Constructor
+	/// \details
     // Constructor needs the IR receiver pin
     IR_receiver(hwlib::target::pin_in & _pin):
         _pin( _pin )
         {}
 
+	/// \brief
+	/// Class for hit entity
+	/// \details
     // Function that returns the 16-bit IR message
     std::array< bool, 16> receiveMessage()
     {
@@ -67,6 +77,9 @@ public:
 private:
     hwlib::target::pin_in & _pin;
 
+	/// \brief
+	/// Function that waits for initial bit
+	/// \details
     // Function that waits for the initial IR bit, start of the 16-bit message
     int _wait_for_start(){
         int pause = 0;
@@ -85,6 +98,9 @@ private:
         }
     }
 
+	/// \brief
+	/// Function that reads a single bit
+	/// \details
     // Read a bit, return 0, 1 if bit is 0, 1 and return -1 if nothing is received
     int _read_bit(){
         bool a;

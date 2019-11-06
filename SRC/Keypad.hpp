@@ -7,19 +7,29 @@
 #define KEYPAD_HPP
 #include "hwlib.hpp"
 
+/// @file
+/// \brief
+/// Class for keypad
+/// \details
 // This class serves as a keypad which can return certain key presses
 class Keypad
 {
 public:
+	/// \brief
+	/// Constructor
+	/// \details
 	// HWLIB keypad instance needed by constructor
-	  Keypad(hwlib::keypad< 16 > & keyPad) :
-	      _keyPad(keyPad)
-	  {
+	Keypad(hwlib::keypad< 16 > & keyPad) :
+	  _keyPad(keyPad)
+	{
 
-	  }
+	}
 
-	  // Return 1 of 16 keys pressed on the keypad
-	  char getKeyPressed() { return _keyPad.getc(); }
+	/// \brief
+	/// Function that returns key presses
+	/// \details
+	// Return 1 of 16 keys pressed on the keypad
+	char getKeyPressed() { return _keyPad.getc(); }
 
 private:
   	hwlib::keypad<16> & _keyPad;

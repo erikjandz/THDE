@@ -13,22 +13,32 @@
 class Hit_Run_Control;
 class Time_Run_Control;
 
+/// @file
+/// \brief
+/// Class for hit transfer
+/// \details
 // This class serves as transferring the hits by other players to the main PC
 class Hit_Transfer_Control : public rtos::task<>{
 public:
-  // Constructor needs some pointers to other classes for accessing certain values
-  Hit_Transfer_Control(Hit_Run_Control * hit_run_control, Time_Run_Control * time_run_control, Keypad & keypad):
-    task(6, "Hit_Transfer_Control"),
-    _hit_run_control(hit_run_control),
-    _time_run_control(time_run_control),
-    _clock(this, 60'000, "_clockkkkk"),
-    _keypad(keypad)
+	/// \brief
+	/// Constructor
+	/// \details
+	// Constructor needs some pointers to other classes for accessing certain values
+	Hit_Transfer_Control(Hit_Run_Control * hit_run_control, Time_Run_Control * time_run_control, Keypad & keypad):
+		task(6, "Hit_Transfer_Control"),
+		_hit_run_control(hit_run_control),
+		_time_run_control(time_run_control),
+		_clock(this, 60'000, "_clockkkkk"),
+		_keypad(keypad)
 	{
 
 	}
 
 protected:
-  // RTOS main
+	/// \brief
+	/// Main function
+	/// \details
+	// RTOS main
 	void main() override;
 
 private:

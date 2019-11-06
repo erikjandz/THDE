@@ -9,11 +9,18 @@
 #include "rtos.hpp"
 #include <array>
 
+/// @file
+/// \brief
+/// Class for receiving IR messages
+/// \details
 // This class is a listener from which classes can inherit from. 
 // It is also a task because it can receive IR messages.
 class Receive_IR_Listener : public rtos::task<>
 {
 public:
+	/// \brief
+	/// Constructor
+	/// \details
 	// Custom priority needed by constructor
     Receive_IR_Listener(unsigned int priority) :
         task(priority, "Receive_IR_Listener"),
@@ -22,6 +29,9 @@ public:
 
     }
 
+	/// \brief
+	/// Function for receiving IR messages
+	/// \details
     // This function receives the 16-bit IR message
     void ReceiveMessage(std::array< bool, 16> message)
     {
@@ -32,12 +42,18 @@ protected:
     rtos::pool< std::array< bool, 16> > _messagePool;
     rtos::flag _messageFlag;
 
+	/// \brief
+	/// Main function
+	/// \details
     // RTOS main
     void main() override 
     {
 
     }
 
+	/// \brief
+	/// Function that decodes IR
+	/// \details
     // This function decodes the weapon power value from the bits
     int _GetWeaponPower(std::array<bool, 16> array){
         int weaponPower = 0;
@@ -51,6 +67,9 @@ protected:
         return weaponPower;
     }
 
+	/// \brief
+	/// Function that decodes IR
+	/// \details
     // This function decodes the player ID value from the bits
     int _GetPlayerID(std::array<bool, 16> array){
         int weaponPower = 0;

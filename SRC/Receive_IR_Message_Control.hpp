@@ -10,6 +10,10 @@
 #include "IR_Receiver.hpp"
 #include <array>
 
+/// @file
+/// \brief
+/// Function for signal 1
+/// \details
 // This class serves as an IR message receiver
 template<unsigned int N>
 class Receive_IR_Message_Control: public rtos::task<>
