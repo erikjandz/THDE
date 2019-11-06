@@ -31,6 +31,7 @@
                           _speaker->playDeathTone();
                           _shoot_available_pool.write( 0 );
                           _scoreEntity.setScore(0);
+                          _isDead = true;
                       	}
                       }
                     }

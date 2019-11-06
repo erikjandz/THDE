@@ -6,6 +6,7 @@
 #include "Shoot_Run_Control.hpp"
 #include "Hit_Run_Control.hpp"
 #include "Game_Parameter_Control.hpp"
+#include "Time_Run_Control.hpp"
 
 void Shoot_Run_Control::main()
 {
@@ -20,9 +21,8 @@ void Shoot_Run_Control::main()
                 {
                     _buttonPressed = true;
                     
-                    if(_hit_run_control->shootIsAvailable())
+                    if(_hit_run_control->shootIsAvailable() && _time_run_control.getTime() > 0)
                     {
-                        hwlib::cout << "deferferfre";
                         int playerID = _game_parameter_control->getPlayerID();
                         int weaponPower = _game_parameter_control->getWeaponPower();
                         encode(playerID, weaponPower);

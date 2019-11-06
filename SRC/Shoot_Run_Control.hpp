@@ -13,6 +13,7 @@
 
 class Hit_Run_Control;
 class Game_Parameter_Control;
+class Time_Run_Control;
 
 /// \brief
 /// Class for shooting players
@@ -20,13 +21,14 @@ class Game_Parameter_Control;
 // This class waits for a button press to then shoot to another player
 class Shoot_Run_Control: public rtos::task<>{
 public:
-    Shoot_Run_Control(Hit_Run_Control * hit_run_control, Game_Parameter_Control * game_parameter_control, Send_IR_Message_Control & send_ir_message_control, FireButton & firebutton, Speaker & speaker):
+    Shoot_Run_Control(Hit_Run_Control * hit_run_control, Game_Parameter_Control * game_parameter_control, Send_IR_Message_Control & send_ir_message_control, FireButton & firebutton, Speaker & speaker, Time_Run_Control * time_run_control):
         task(3, "Shoot_Run_Control"),
         _hit_run_control(hit_run_control),
         _game_parameter_control(game_parameter_control),
         _send_ir_message_control(send_ir_message_control),
         _fireButton(firebutton),
-        _speaker(speaker)
+        _speaker(speaker),
+        _time_run_control(time_run_control)
     {
 
     }
@@ -44,6 +46,7 @@ private:
     Send_IR_Message_Control & _send_ir_message_control;
     FireButton & _fireButton;
     Speaker & _speaker;
+    Time_Run_Control * _time_run_control = nullptr;
     std::array<bool, 16> _message;
     bool _buttonPressed = false;
 

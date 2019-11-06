@@ -27,7 +27,7 @@ int main()
     hwlib::wait_ms( 1000 );
 
     // Hardware objects
-	auto kp0 		  = target::pin_oc( target::pins::d36 );
+	  auto kp0 		     = target::pin_oc( target::pins::d36 );
     auto kp1 		     = target::pin_oc( target::pins::d38 );
     auto kp2 		     = target::pin_oc( target::pins::d40 );
     auto kp3 		     = target::pin_oc( target::pins::d42 );
@@ -72,7 +72,7 @@ int main()
     auto hit       = Hit_Run_Control(&speaker, &parameter);
     auto transfer  = Hit_Transfer_Control(&hit, &time, keypad);
     auto receive   = Receive_IR_Message_Control(irReceiver, std::array<Receive_IR_Listener*, 2> { &hit, &parameter });
-    auto shoot     = Shoot_Run_Control(&hit, &parameter, send, fireButton, speaker);
+    auto shoot     = Shoot_Run_Control(&hit, &parameter, send, fireButton, speaker, &time);
     time.giveHitControlPointer(&hit);
     time.giveTransferControlPointer(&transfer);
     (void) display;
