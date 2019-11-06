@@ -22,6 +22,7 @@ void Shoot_Run_Control::main()
                     
                     if(_hit_run_control->shootIsAvailable())
                     {
+                        hwlib::cout << "deferferfre";
                         int playerID = _game_parameter_control->getPlayerID();
                         int weaponPower = _game_parameter_control->getWeaponPower();
                         encode(playerID, weaponPower);

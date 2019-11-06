@@ -28,7 +28,6 @@ void Time_Run_Control::main()
 			case State::IDLE:
 			{
 			  	wait( _time_set_flag);
-			  	hwlib::cout << "DEBUG";
 				_timeRemaining = _time_set_pool.read();
 				_time_get_pool.write(_timeRemaining);
 				_state = State::COUNTDOWN;
