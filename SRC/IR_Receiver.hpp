@@ -1,15 +1,23 @@
+//          Copyright Youri de Vor, Erik de Zeeuw, Hugo Cornel, Matthijs Koelewijn 2019 - 2020.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          https://www.boost.org/LICENSE_1_0.txt)
+
 #ifndef IR_RECEIVER_HPP
 #define IR_RECEIVER_HPP
 #include "hwlib.hpp"
 
-class IR_receiver{
+class IR_receiver
+{
 public:
+    // Constructor needs the IR receiver pin
     IR_receiver(hwlib::target::pin_in & _pin):
         _pin( _pin )
         {}
 
-    //receive message
-    std::array< bool, 16> receiveMessage(){
+    // Function that returns the 16-bit IR message
+    std::array< bool, 16> receiveMessage()
+    {
         for(;;){
             std::array<bool, 16> message1;
             std::array<bool, 16> message2;
@@ -58,6 +66,7 @@ public:
 private:
     hwlib::target::pin_in & _pin;
 
+    // Function that waits for the initial IR bit, start of the 16-bit message
     int _wait_for_start(){
         int pause = 0;
         for(;;){
@@ -74,7 +83,8 @@ private:
             pause += 100;
         }
     }
-    //read a bit, return 0, 1 if bit is 0, 1 and return -1 if nothing is received
+
+    // Read a bit, return 0, 1 if bit is 0, 1 and return -1 if nothing is received
     int _read_bit(){
         bool a;
         bool b;

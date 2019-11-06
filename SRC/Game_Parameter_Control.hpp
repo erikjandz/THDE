@@ -42,6 +42,7 @@ public:
     int getWeaponPower();
 
 protected:
+    // RTOS main
     void main() override;
 
 private:

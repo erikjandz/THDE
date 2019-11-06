@@ -12,6 +12,7 @@
 class FireButton
 {
 public:
+	// Constructor needs button pin
 	FireButton(hwlib::target::pin_in & pin) :
 		_button(pin)
 	{

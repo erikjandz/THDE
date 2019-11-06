@@ -8,7 +8,7 @@
           switch(_state){
               case State::IDLE:
               {
-                _score_pool.write(_score.getScore());
+                _score_pool.write(_scoreEntity.getScore());
                  wait(_messageFlag);
                  if(_gameStarted)
                  {
@@ -29,10 +29,10 @@
                   {
                     _hitList[_hitListIndex] = HitEntity(_GetPlayerID(msg), _GetWeaponPower(msg));
                     _hitListIndex++;
-                    _score.setScore(_score.getScore() - _GetWeaponPower(msg));
-                    _score_pool.write(_score.getScore());
+                    _scoreEntity.setScore(_scoreEntity.getScore() - _GetWeaponPower(msg));
+                    _score_pool.write(_scoreEntity.getScore());
 
-                    if(_score.getScore() > 0){ // Still alive
+                    if(_scoreEntity.getScore() > 0){ // Still alive
                         _shoot_available_pool.write( 1 );
                     }else{ // Dead
                         _speaker->playDeathTone();

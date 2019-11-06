@@ -20,11 +20,12 @@ class Game_Parameter_Control;
 class Hit_Run_Control: public Receive_IR_Listener
 {
 public:
-  // The constructor needs pointers to a few classes so they can be accessed in the RTOS main-loop
+      // The constructor needs pointers to a few classes so they can be accessed in the RTOS main-loop
       Hit_Run_Control(Speaker * speaker, Game_Parameter_Control * parameterControl):
       Receive_IR_Listener(7),
           _speaker( speaker ),
-          _parameterControl(parameterControl)
+          _parameterControl(parameterControl),
+          _scoreEntity(100)
           {}
 
        // This function returns if the player is allowed to shoot. For example when he is dead, he cannot shoot.
@@ -44,7 +45,7 @@ private:
       rtos::pool< bool > _shoot_available_pool;
       Speaker * _speaker = nullptr;
       Game_Parameter_Control * _parameterControl = nullptr;
-      ScoreEntity _score = ScoreEntity(100);
+      ScoreEntity _scoreEntity;
       std::array<HitEntity, 100> _hitList;
       int _hitListIndex = 0;
       bool _gameStarted = false;
