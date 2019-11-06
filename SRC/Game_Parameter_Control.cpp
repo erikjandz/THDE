@@ -42,15 +42,10 @@ void Game_Parameter_Control::main()
                 key = _keypad->getKeyPressed();
                 if( key >= '0' && key <= '9' ){
                     _weaponPower = key - 48;
-                    _state = State::SECOND_NUMBER_ENTERED;
+                    _playerIDPool.write(_playerID);
+                    _weaponPowerPool.write(_weaponPower);
+                    _state = State::WAITING_FOR_LEADER;
                 }
-                break;
-
-            case State::SECOND_NUMBER_ENTERED:
-                _playerIDPool.write(_playerID);
-                _weaponPowerPool.write(_weaponPower);
-                hwlib::cout << _playerID << " " << _weaponPower << hwlib::endl;
-                _state = State::WAITING_FOR_LEADER;
                 break;
 
             case State::WAITING_FOR_LEADER:

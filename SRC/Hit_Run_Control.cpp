@@ -18,7 +18,7 @@
                 {
                   _gameStarted = true;
                 }
-                
+
                 break;
               }
 
@@ -31,7 +31,6 @@
                     _hitListIndex++;
                     _score.setScore(_score.getScore() - _GetWeaponPower(msg));
                     _score_pool.write(_score.getScore());
-                    _shoot_available_pool.write(_score.getScore() > 0);
 
                     if(_score.getScore() > 0){ // Still alive
                         _shoot_available_pool.write( 1 );
