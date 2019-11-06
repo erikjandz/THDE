@@ -11,7 +11,7 @@
 class Speaker : public rtos::task<> {
 public:
   Speaker(hwlib::target::pin_out& pin):
-  task(10, "Speaker"),
+  task(0, "Speaker"),
   _pin( pin ),
    _end_tone_flag(this, "end"),
    _shoot_tone_flag(this, "shoot"),
@@ -71,7 +71,7 @@ private:
 
     void await( long long unsigned int t ){
      while( t > hwlib::now_us() ){}
-  }
+  };
 
   void beep( hwlib::pin_out & lsp, int f, int d, int fd = 1000 ){
      auto t = hwlib::now_us();
@@ -81,10 +81,10 @@ private:
          f = f * fd / 1000;
          lsp.write( 1 );
          lsp.flush();
-         await( t += p );
+         wait( p );
          lsp.write( 0 );
          lsp.flush();
-         await( t += p );
+         wait( p );
      }
   }
 

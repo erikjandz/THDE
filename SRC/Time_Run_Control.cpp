@@ -51,18 +51,18 @@ void Time_Run_Control::main()
 				_display.newLine();
 				_display.showNumber(_hitControl->getScore());
 				_display.flush();
-				_state = State::COUNTDOWN;
+				
 
 				// Check if game finished
 				if(_timeRemaining <= 0)
 				{
+					_speaker.playEndTone();
 					_state = State::DONE;
 				}
-				break;
-
-			case State::DONE:
-				_speaker.playEndTone();
-				_state = State::IDLE;
+				else
+				{
+					_state = State::COUNTDOWN;
+				}
 				break;
 		}
 	}
