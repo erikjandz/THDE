@@ -10,20 +10,20 @@
 /// \brief
 /// Class for hit entity
 /// \details
-// This class serves as storage entity for the player's hits by other players
+/// This class serves as storage entity for the player's hits by other players
 class HitEntity final
 {
 public:
 	/// \brief
 	/// Default constructor
 	/// \details
-    // Default constructor for array initialization
-	 HitEntity() {}
+    /// Default constructor for array initialization
+    HitEntity() {}
 
 	/// \brief
 	/// Constructor
 	/// \details
-    // Constructor needs initial values
+    /// Constructor needs initial values
     HitEntity(int playerID, int weaponPower):
       _playerID(playerID),
       _weaponPower(weaponPower)
@@ -34,7 +34,7 @@ public:
 	/// \brief
 	/// Get playerID function
 	/// \details
-	// This function returns the playerID
+	/// This function returns the playerID
 	int getPlayerID()
 	{
 	  return _playerID;
@@ -43,7 +43,7 @@ public:
 	/// \brief
 	/// Get weaponPower function
 	/// \details
-	// This function returns the weaponPower
+	/// This function returns the weaponPower
 	int getWeaponPower()
 	{
 	  return _weaponPower;

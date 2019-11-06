@@ -30,7 +30,7 @@ public:
 	/// \brief
 	/// Constructor
 	/// \details
-	// The constructor needs pointers to a few classes so they can be accessed in the RTOS main-loop
+	/// The constructor needs pointers to a few classes so they can be accessed in the RTOS main-loop
     Game_Parameter_Control(Keypad * keypad, Oled_Display * display, Time_Run_Control * time_run_control, Init_Game_Control * init):
    		 Receive_IR_Listener(4),
         _keypad( keypad ),
@@ -45,20 +45,20 @@ public:
 	/// \brief
 	/// Get playerID function
 	/// \details
-    // This function returns the playerID of this current device
+    /// This function returns the playerID of this current device
     int getPlayerID();
 
 	/// \brief
 	/// Get weaponPower function
 	/// \details
-     // This function returns the weaponPower of this current device
+    /// This function returns the weaponPower of this current device
     int getWeaponPower();
 
 protected:
 	/// \brief
 	/// Main function
 	/// \details
-    // RTOS main
+    /// RTOS main
     void main() override;
 
 private:

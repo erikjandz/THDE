@@ -19,7 +19,7 @@ public:
 	/// \brief
 	/// Constructor
 	/// \details
-	// Constructor needs button pin
+	/// Constructor needs button pin
 	FireButton(hwlib::target::pin_in & pin) :
 		_button(pin)
 	{
@@ -29,7 +29,7 @@ public:
 	/// \brief
 	/// Button press function
 	/// \details
-	// Returns true is the button is pressed
+	/// Returns true is the button is pressed
 	bool isButtonPressed()
 	{
 		_button.refresh();

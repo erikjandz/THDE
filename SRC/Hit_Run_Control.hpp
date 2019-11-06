@@ -24,36 +24,43 @@ class Game_Parameter_Control;
 class Hit_Run_Control: public Receive_IR_Listener
 {
 public:
-	  /// \brief
-	  /// Constructor
-	  /// \details
-      /// The constructor needs pointers to a few classes so they can be accessed in the RTOS main-loop
-      Hit_Run_Control(Speaker * speaker, Game_Parameter_Control * parameterControl):
-      Receive_IR_Listener(7),
-          _speaker( speaker ),
-          _parameterControl(parameterControl),
-          _scoreEntity(100)
-       {
-          _hitList.fill(HitEntity(-1, -1));
-       }
+		/// \brief
+		/// Constructor
+		/// \details
+		/// The constructor needs pointers to a few classes so they can be accessed in the RTOS main-loop
+		Hit_Run_Control(Speaker * speaker, Game_Parameter_Control * parameterControl):
+		Receive_IR_Listener(7),
+		  _speaker( speaker ),
+		  _parameterControl(parameterControl),
+		  _scoreEntity(100)
+		{
+		  _hitList.fill(HitEntity(-1, -1));
+		}
 
-	   /// \brief
-	   /// Shoot avalible function
-	   /// \details
-       /// This function returns if the player is allowed to shoot. For example when he is dead, he cannot shoot.
-       bool shootIsAvailable();
+		/// \brief
+		/// Shoot avalible function
+		/// \details
+		/// This function returns if the player is allowed to shoot. For example when he is dead, he cannot shoot.
+		bool shootIsAvailable();
 
-	   /// \brief
-	   /// Button press function
-	   /// \details
-       /// This function returns the current player's score
-       int getScore();
+		/// \brief
+		/// Button press function
+		/// \details
+		/// This function returns the current player's score
+		int getScore();
 
-       // This function returns the list of hits by other players
-       std::array<HitEntity, 100> & getHitList();
+		/// \brief
+		/// Button press function
+		/// \details
+		/// This function returns the list of hits by other players
+		std::array<HitEntity, 100> & getHitList();
 
 protected:
-  void main() override;
+	/// \brief
+	/// Main function
+	/// \details
+	/// RTOS main
+  	void main() override;
 
 private:
       rtos::pool< int > _score_pool;
