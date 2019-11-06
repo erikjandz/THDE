@@ -1,3 +1,8 @@
+//          Copyright Youri de Vor, Erik de Zeeuw, Hugo Cornel, Matthijs Koelewijn 2019 - 2020.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          https://www.boost.org/LICENSE_1_0.txt)
+
 #ifndef INIT_GAME_CONTROL_HPP
 #define INIT_GAME_CONTROL_HPP
 #include "hwlib.hpp"
@@ -5,6 +10,11 @@
 #include "Keypad.hpp"
 #include "Send_IR_Message_Control.hpp"
 
+/// Used to send game parameters to other players, but mainly meant to start the game at the same time for all players.
+///
+/// This class takes input from the user, through the keypad, and adds these inputs to an array.
+/// These inputs represent the game time.
+/// This array _message is then sent to other players.
 class Init_Game_Control : public rtos::task<>{
 public:
   Init_Game_Control(Keypad & keypad, Oled_Display & display, Send_IR_Message_Control & send_ir_message_control):
@@ -16,11 +26,17 @@ public:
     _clock(this, 60'000, "clockkk")
     {}
 
-    void setLeader()
+  /// public method to set the _leaderFlag
+  ///
+  /// serves as an interface for other classes to tell Init that this arduino is the game leader.
+  void setLeader()
     {
       _leaderFlag.set();
     }
 
+  /// the main of this class
+  ///
+  /// takes care of the task switching and calling the necessary methods to receive input from the keyboard and send messages using the IR transmitter
   void main()override{
     char k;
     char key;
@@ -60,7 +76,7 @@ public:
         case State::DONE:
           decode(0, key-48);
           _send_ir_message_control.send_message(_message);
-          hwlib::wait_ms(100000000);
+          hwlib::wait_ms(100'000'000);
           break;
       }
     }

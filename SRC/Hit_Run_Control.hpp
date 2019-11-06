@@ -1,3 +1,8 @@
+//          Copyright Youri de Vor, Erik de Zeeuw, Hugo Cornel, Matthijs Koelewijn 2019 - 2020.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          https://www.boost.org/LICENSE_1_0.txt)
+
 #ifndef HIT_RUN_CONTROL_HPP
 #define HIT_RUN_CONTROL_HPP
 
@@ -22,7 +27,7 @@ public:
           _parameterControl(parameterControl)
           {}
 
-       // This function returns if the player is allowed to shoot. For example when he is dead, he cannot shoot.
+       // This function returns true if the player is allowed to shoot. For example when he is dead, he cannot shoot.
        bool shootIsAvailable();
 
        // This function returns the current player's score

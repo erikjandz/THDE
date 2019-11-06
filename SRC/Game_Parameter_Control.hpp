@@ -1,3 +1,8 @@
+//          Copyright Youri de Vor, Erik de Zeeuw, Hugo Cornel, Matthijs Koelewijn 2019 - 2020.
+// Distributed under the Boost Software License, Version 1.0.
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          https://www.boost.org/LICENSE_1_0.txt)
+
 #ifndef GAME_PARAMETER_CONTROL_HPP
 #define GAME_PARAMETER_CONTROL_HPP
 
@@ -10,8 +15,11 @@ class Oled_Display;
 class Time_Run_Control;
 class Init_Game_Control;
 
-// This class is to set parameters for each player: playerID & weaponPower. 
-// It also listens to the game leader, which sets the play time.
+/// This class is to set game parameters for the player: playerID & weaponPower as well as receiving playtime from the
+///
+/// This class inherits from the Receive_IR_Listener interface class.
+/// It sets game parameters playerID and weaponPower for the player.
+/// It also listens to the game leader, who sets the play time.
 class Game_Parameter_Control: public Receive_IR_Listener
 {
 public:
