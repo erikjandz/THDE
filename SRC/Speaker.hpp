@@ -1,7 +1,6 @@
 #ifndef SPEAKER_HPP
 #define SPEAKER_HPP
 #include "hwlib.hpp"
-#include "Beep.hpp"
 #include "rtos.hpp"
 
 class Speaker : public rtos::task<> {
