@@ -26,6 +26,7 @@ HEADERS += Send_IR_Message_Control.hpp
 HEADERS += Shoot_Run_Control.hpp
 HEADERS += Speaker.hpp
 HEADERS += Time_Run_Control.hpp
+HEADERS += HitEntity.hpp
 SOURCES += Game_Parameter_Control.cpp
 SOURCES += Hit_Run_Control.cpp
 SOURCES += Hit_Transfer_Control.cpp

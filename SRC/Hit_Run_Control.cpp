@@ -1,6 +1,5 @@
 #include "Hit_Run_Control.hpp"
 #include "Speaker.hpp"
-#include "Oled_Display.hpp"
 #include "Game_Parameter_Control.hpp"
 
   void Hit_Run_Control::main()
@@ -9,47 +8,38 @@
           switch(_state){
               case State::IDLE:
               {
-                  _score_pool.write(_score.getScore());
-                  auto evt = wait(_messageFlag + _displayFlag);
-                  if(evt == _messageFlag)
-                  {
-                      hwlib::cout << "debug";
-                      _state = State::UPDATE_SCORE;
-                  }
-                  else if(evt == _displayFlag)
-                  {
-                    _state = State::DISPLAY_SCORE;
-                  }
-
-                  break;
+                _score_pool.write(_score.getScore());
+                 wait(_messageFlag);
+                 if(_gameStarted)
+                 {
+                  _state = State::UPDATE_SCORE;
+                 }
+                else
+                {
+                  _gameStarted = true;
+                }
+                
+                break;
               }
 
               case State::UPDATE_SCORE:
               {
                   auto msg = _messagePool.read();
-                  if(_GetPlayerID(msg) != _parameterControl->getPlayerID())
+                  if(_GetPlayerID(msg) != _parameterControl->getPlayerID()) // Dont hit yourself
                   {
+                    _hitList[_hitListIndex] = HitEntity(_GetPlayerID(msg), _GetWeaponPower(msg));
+                    _hitListIndex++;
                     _score.setScore(_score.getScore() - _GetWeaponPower(msg));
                     _score_pool.write(_score.getScore());
                     _shoot_available_pool.write(_score.getScore() > 0);
 
-                    if(_score.getScore() > 0){
+                    if(_score.getScore() > 0){ // Still alive
                         _shoot_available_pool.write( 1 );
-                    }else{
+                    }else{ // Dead
                         _speaker->playDeathTone();
                         _shoot_available_pool.write( 0 );
                     }
                   }
-                  _state = State::IDLE;
-                  break;
-              }
-
-              case State::DISPLAY_SCORE:
-              {
-                  _display->showText("Score:");
-                  _display->newLine();
-                  _display->showNumber(_score.getScore());
-                  _display->flush();
                   _state = State::IDLE;
                   break;
               }
@@ -67,7 +57,7 @@
       return _score_pool.read();
   }
 
-  void Hit_Run_Control::displayScore()
+  std::array<HitEntity, 100> & Hit_Run_Control::getHitList()
   {
-     _displayFlag.set();
+    return _hitList;
   }

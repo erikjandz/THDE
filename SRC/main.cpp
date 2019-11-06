@@ -22,13 +22,13 @@ int main()
     hwlib::wait_ms( 1000 );
 
     // Hardware objects
-	auto kp0 		 = target::pin_oc( target::pins::d36 );
-    auto kp1 		 = target::pin_oc( target::pins::d38 );
-    auto kp2 		 = target::pin_oc( target::pins::d40 );
-    auto kp3 		 = target::pin_oc( target::pins::d42 );
-    auto kp4 		 = target::pin_in( target::pins::d44 );
-    auto kp5 		 = target::pin_in( target::pins::d46 );
-    auto kp6 		 = target::pin_in( target::pins::d48 );
+	auto kp0 		  = target::pin_oc( target::pins::d36 );
+    auto kp1 		     = target::pin_oc( target::pins::d38 );
+    auto kp2 		     = target::pin_oc( target::pins::d40 );
+    auto kp3 		     = target::pin_oc( target::pins::d42 );
+    auto kp4 		     = target::pin_in( target::pins::d44 );
+    auto kp5 		     = target::pin_in( target::pins::d46 );
+    auto kp6 		     = target::pin_in( target::pins::d48 );
     auto kp7         = target::pin_in( target::pins::d50 );
     auto kp_out      = hwlib::port_oc_from( kp0, kp1, kp2, kp3 );
     auto kp_in       = hwlib::port_in_from( kp4,  kp5,  kp6,  kp7  );
@@ -64,12 +64,12 @@ int main()
     auto time      = Time_Run_Control(display, speaker);
     auto init      = Init_Game_Control(keypad, display, send);
     auto parameter = Game_Parameter_Control(&keypad, &display, &time, &init);
-    auto hit       = Hit_Run_Control(&display, &speaker, &parameter);
-    auto transfer  = Hit_Transfer_Control(&hit);
-    time.giveHitControlPointer(&hit);
-    time.giveTransferControlPointer(&transfer);
+    auto hit       = Hit_Run_Control(&speaker, &parameter);
+    auto transfer  = Hit_Transfer_Control(&hit, &time, keypad);
     auto receive   = Receive_IR_Message_Control(irReceiver, std::array<Receive_IR_Listener*, 2> { &hit, &parameter });
     auto shoot     = Shoot_Run_Control(&hit, &parameter, send, fireButton, speaker);
+    time.giveHitControlPointer(&hit);
+    time.giveTransferControlPointer(&transfer);
     (void) display;
     (void) parameter;
    	(void) send;

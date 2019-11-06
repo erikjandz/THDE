@@ -46,6 +46,7 @@ private:
 	rtos::clock _clock;
 	rtos::flag _time_set_flag;
 	rtos::pool< int > _time_set_pool;
+	rtos::pool< int > _time_get_pool;
 
 	enum class State { IDLE, ACTIVE, INIT, COUNTDOWN, DONE};
 	State _state = State::IDLE;

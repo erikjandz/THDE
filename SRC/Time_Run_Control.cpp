@@ -12,9 +12,8 @@ void Time_Run_Control::setTime(int time)
 
 int Time_Run_Control::getTime()
 {
-	return _timeRemaining;
+	return _time_get_pool.read();
 }
-
 
 void Time_Run_Control::main()
 {
@@ -31,6 +30,7 @@ void Time_Run_Control::main()
 
 			case State::INIT:
 				_timeRemaining = _time_set_pool.read();
+				_time_get_pool.write(_timeRemaining);
 				_state = State::COUNTDOWN;
 				break;
 
@@ -41,6 +41,7 @@ void Time_Run_Control::main()
 
 			case State::ACTIVE:
 				_timeRemaining--;
+				_time_get_pool.write(_timeRemaining);
 				_display.clear();
 				_display.showText("Time:");
 				_display.newLine();
@@ -51,15 +52,17 @@ void Time_Run_Control::main()
 				_display.showNumber(_hitControl->getScore());
 				_display.flush();
 				_state = State::COUNTDOWN;
-				if(_timeRemaining <= 0){
-					_transferControl->TimeFlagSet();
+
+				// Check if game finished
+				if(_timeRemaining <= 0)
+				{
 					_state = State::DONE;
 				}
 				break;
 
 			case State::DONE:
 				_speaker.playEndTone();
-				hwlib::wait_ms(1000000);
+				_state = State::IDLE;
 				break;
 		}
 	}
