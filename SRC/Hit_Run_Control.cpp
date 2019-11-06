@@ -14,7 +14,7 @@
                  if(_gameStarted)
                  {
                     auto msg = _messagePool.read();
-                    if(_GetPlayerID(msg) != _parameterControl->getPlayerID()) // Dont hit yourself
+                    if(_GetPlayerID(msg) != _parameterControl->getPlayerID() && _scoreEntity.getScore() > 0) // Dont hit yourself
                     {
                       _hitList[_hitListIndex] = HitEntity(_GetPlayerID(msg), _GetWeaponPower(msg));
                       _hitListIndex++;
