@@ -21,7 +21,7 @@ void Shoot_Run_Control::main()
                 {
                     _buttonPressed = true;
                     
-                    if(_hit_run_control->shootIsAvailable() && _time_run_control.getTime() > 0)
+                    if(_hit_run_control->shootIsAvailable() && _time_run_control->getTime() > 0)
                     {
                         int playerID = _game_parameter_control->getPlayerID();
                         int weaponPower = _game_parameter_control->getWeaponPower();
