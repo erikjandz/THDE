@@ -7,7 +7,6 @@
 #define KEYPAD_HPP
 #include "hwlib.hpp"
 
-/// @file
 /// \brief
 /// Class for keypad
 /// \details

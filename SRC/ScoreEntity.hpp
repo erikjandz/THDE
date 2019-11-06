@@ -6,17 +6,32 @@
 #ifndef SCOREENTITY_HPP
 #define SCOREENTITY_HPP
 
+/// \brief
+/// Class for score
+/// \details
 // This class serves as a storage entity for the player's score
 class ScoreEntity{
 public:
+	/// \brief
+	/// Constructor
+	/// \details
+	/// Constructor needs score value
     ScoreEntity(int _score):
       _score(_score)
       {}
 
+	/// \brief
+	/// Get score function
+	/// \details
+    /// Function that returns score
     int getScore(){
         return _score;
     }
 
+	/// \brief
+	/// Set score function
+	/// \details
+	/// Function that sets score
     void setScore(int score){
         _score = score;
     }

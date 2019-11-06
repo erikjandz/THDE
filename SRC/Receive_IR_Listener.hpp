@@ -9,7 +9,6 @@
 #include "rtos.hpp"
 #include <array>
 
-/// @file
 /// \brief
 /// Class for receiving IR messages
 /// \details

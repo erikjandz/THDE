@@ -8,7 +8,6 @@
 #include "hwlib.hpp"
 #include "rtos.hpp"
 
-/// @file
 /// \brief
 /// Class for sending IR bits
 /// \details

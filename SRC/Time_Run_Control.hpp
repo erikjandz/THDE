@@ -14,10 +14,16 @@
 class Hit_Transfer_Control;
 class Hit_Run_Control;
 
+/// \brief
+/// Class for game time
+/// \details
 // This class handles the game time
 class Time_Run_Control : public rtos::task<>
 {
 public:
+	/// \brief
+	/// Constructor
+	/// \details
 	// Constructor needs the display & speaker references
 	Time_Run_Control(Oled_Display & display, Speaker & speaker):
 		task(9, "Time_Run_Control"),
@@ -30,18 +36,30 @@ public:
 
 	}
 
+	/// \brief
+	/// Function for setting time
+	/// \details
 	// Functions that sets the starting game time
 	void setTime(int time);
 
+	/// \brief
+	/// Time return function
+	/// \details
 	// Function that returns the game time
 	int getTime();
 
+	/// \brief
+	/// Function that gives pointer
+	/// \details
 	// Function that passes a pointer to Hit_Run_Control 
 	void giveHitControlPointer(Hit_Run_Control * instance)
 	{
 		_hitControl = instance;
 	}
 
+	/// \brief
+	/// Function that gives pointer
+	/// \details
 	// Function that passes a pointer to Hit_Transfer_Control 
 	void giveTransferControlPointer(Hit_Transfer_Control * instance)
 	{
@@ -50,6 +68,10 @@ public:
 
 
 protected:
+	/// \brief
+	/// Main function
+	/// \details
+	/// RTOS main
 	void main() override;
 
 private:

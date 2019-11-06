@@ -14,6 +14,9 @@
 class Hit_Run_Control;
 class Game_Parameter_Control;
 
+/// \brief
+/// Class for shooting players
+/// \details
 // This class waits for a button press to then shoot to another player
 class Shoot_Run_Control: public rtos::task<>{
 public:
@@ -29,6 +32,9 @@ public:
     }
 
 protected:
+	/// \brief
+	/// Main function
+	/// \details
     // RTOS main
 	void main() override;
 
@@ -44,6 +50,9 @@ private:
     enum class State { WAITING };
     State _state = State::WAITING;
 
+	/// \brief
+	/// Function that encodes playerID & weaponPower
+	/// \details
     // This function encodes the IR message from playerID & weaponPower
     void encode(int playerID, int weaponPower){
         // encode the message to a bool array ready to send

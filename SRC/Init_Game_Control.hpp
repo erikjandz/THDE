@@ -10,7 +10,6 @@
 #include "Keypad.hpp"
 #include "Send_IR_Message_Control.hpp"
 
-/// @file
 /// \brief
 /// Class for init game
 /// \details

@@ -7,7 +7,6 @@
 #define IR_RECEIVER_HPP
 #include "hwlib.hpp"
 
-/// @file
 /// \brief
 /// Class for receiving IR messages
 /// \details

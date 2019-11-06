@@ -10,7 +10,6 @@
 #include "IR_Receiver.hpp"
 #include <array>
 
-/// @file
 /// \brief
 /// Function for signal 1
 /// \details
@@ -19,13 +18,19 @@ template<unsigned int N>
 class Receive_IR_Message_Control: public rtos::task<>
 {
 public:
+	/// \brief
+	/// Constructor
+	/// \details
 	// Constructor needs the IR-receiver & IR listeners
     Receive_IR_Message_Control(IR_receiver & _IR_Receiver, std::array<Receive_IR_Listener*, N> _IR_Listeners):
-        task(1, "Receive_IR_Message_Control"),
+        task(0, "Receive_IR_Message_Control"),
         _IR_Receiver( _IR_Receiver ),
         _IR_Listeners( _IR_Listeners)
         {}
 
+	/// \brief
+	/// Main function
+	/// \details
  	// RTOS main
     void main() override
     {
@@ -40,6 +45,9 @@ public:
         }
     }
 
+	/// \brief
+	/// Function that decodes IR message
+	/// \details
     // This function decodes a 16-bit IR message to playerID & weaponPower
     void decode(std::array<bool, 16> array)
     {

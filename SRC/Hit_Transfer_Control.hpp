@@ -13,7 +13,6 @@
 class Hit_Run_Control;
 class Time_Run_Control;
 
-/// @file
 /// \brief
 /// Class for hit transfer
 /// \details

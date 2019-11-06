@@ -15,7 +15,6 @@ class Oled_Display;
 class Time_Run_Control;
 class Init_Game_Control;
 
-/// @file
 /// \brief
 /// Class for setting game parameters
 /// \details

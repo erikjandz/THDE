@@ -6,7 +6,6 @@
 #ifndef HIT_ENTITY_HPP
 #define HIT_ENTITY_HPP
 
-/// @file
 /// \brief
 /// Class for hit entity
 /// \details

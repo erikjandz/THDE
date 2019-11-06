@@ -21,12 +21,17 @@
                       _scoreEntity.setScore(_scoreEntity.getScore() - _GetWeaponPower(msg));
                       _score_pool.write(_scoreEntity.getScore());
 
-                      if(_scoreEntity.getScore() > 0){ // Still alive
+                      if(_scoreEntity.getScore() > 0)
+                      { // Still alive
                           _shoot_available_pool.write( 1 );
-                      }else{ // Dead
+                      }else
+                      { // Dead
+                      	if(!_isDead)
+                      	{
                           _speaker->playDeathTone();
                           _shoot_available_pool.write( 0 );
                           _scoreEntity.setScore(0);
+                      	}
                       }
                     }
                  }
@@ -43,7 +48,7 @@
 
   bool Hit_Run_Control::shootIsAvailable()
   {
-      return _shoot_available_pool.read();
+      return _shoot_available_pool.read() && _gameStarted;
   }
 
   int Hit_Run_Control::getScore()

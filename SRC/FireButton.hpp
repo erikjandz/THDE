@@ -8,7 +8,6 @@
 
 #include "hwlib.hpp"
 
-/// @file
 /// \brief
 /// Class for fire button
 /// \details

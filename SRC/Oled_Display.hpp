@@ -23,7 +23,6 @@ struct IntChar
 	char c;
 };
 
-/// @file
 /// \brief
 /// Class for displaying on screem
 /// \details

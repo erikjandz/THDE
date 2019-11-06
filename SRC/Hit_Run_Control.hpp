@@ -16,7 +16,6 @@
 class Speaker;
 class Game_Parameter_Control;
 
-/// @file
 /// \brief
 /// Class for registering hits
 /// \details
@@ -71,6 +70,7 @@ private:
       std::array<HitEntity, 100> _hitList;
       int _hitListIndex = 0;
       bool _gameStarted = false;
+      bool _isDead = false;
 
       enum class State { WAITING };
       State _state = State::WAITING;
