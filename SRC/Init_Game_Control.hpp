@@ -56,13 +56,16 @@ public:
           break;
         case State::KEYPRESSED:
           hwlib::wait_ms( 60 );
+          _display.clear();
           _display.showText("enter key");
+          _display.flush();
           k = _keyPad.getKeyPressed();
           if(k >= '0' && k <= '9'){
             key = k;
             _display.clear();
             _display.showText(&k);
             _display.showText(" pressed");
+            _display.flush();
             _state = State::NUMBER_ENTERED;
           }
           break;
