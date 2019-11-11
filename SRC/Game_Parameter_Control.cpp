@@ -18,6 +18,7 @@ void Game_Parameter_Control::main()
                 hwlib::wait_ms(60);
                 if(_keypad->getKeyPressed() == 'A')
                 {
+                	hwlib::cout << "A";
                     _state = State::A_PRESSED;
                 }
                 break;
@@ -27,6 +28,7 @@ void Game_Parameter_Control::main()
                 key = _keypad->getKeyPressed();
                 if( key >= '0' && key <= '9' ){
                     _playerID = key - 48;
+                    hwlib::cout << "number";
                     _state = State::FIRST_NUMBER_ENTERED;
                 }
                 if(_playerID == 0)
@@ -38,6 +40,7 @@ void Game_Parameter_Control::main()
             case State::FIRST_NUMBER_ENTERED:
                 hwlib::wait_ms(60);
                 if(_keypad->getKeyPressed() == 'B'){
+                	hwlib::cout << "B";
                     _state = State::B_PRESSED;
                 }
                 break;
@@ -46,6 +49,7 @@ void Game_Parameter_Control::main()
                 hwlib::wait_ms(60);
                 key = _keypad->getKeyPressed();
                 if( key >= '0' && key <= '9' ){
+                	hwlib::cout << "number";
                     _weaponPower = key - 48;
                     _playerIDPool.write(_playerID);
                     _weaponPowerPool.write(_weaponPower);

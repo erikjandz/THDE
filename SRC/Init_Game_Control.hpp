@@ -57,6 +57,7 @@ public:
           wait( _clock);
           k = _keyPad.getKeyPressed();
           if(k == 'C'){
+            hwlib::cout << "C";
             _state = State::KEYPRESSED;
           }
           break;
@@ -67,6 +68,7 @@ public:
           _display.flush();
           k = _keyPad.getKeyPressed();
           if(k >= '0' && k <= '9'){
+            hwlib::cout << "time";
             key = k;
             _display.clear();
             _display.showText(&k);
@@ -79,6 +81,7 @@ public:
           hwlib::wait_ms( 60 );
           k = _keyPad.getKeyPressed();
           if(k == '#'){
+            hwlib::cout << "#";
             _state = State::DONE;
           }
           break;
